@@ -1,10 +1,17 @@
 package GUI;
 
+import Logic.LoginLogic;
+import Persistencia.ConnectionMySQL;
 import com.sun.awt.AWTUtilities;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author Camilo
@@ -13,11 +20,16 @@ public class Login extends javax.swing.JFrame {
     
     int xx = 0;
     int xy = 0;
+    ConnectionMySQL cms;
+    LoginLogic login;
     
     public Login() {
         initComponents();
         Shape form = new RoundRectangle2D.Double(0, 0, this.getBounds().width, this.getBounds().height, 10, 10);
         AWTUtilities.setWindowShape(this, form);
+        
+        cms = ConnectionMySQL.getInstance();
+        login = LoginLogic.getInstance();
     }
 
     @SuppressWarnings("unchecked")
@@ -225,11 +237,33 @@ public class Login extends javax.swing.JFrame {
 
     private void btn_IngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_IngresarActionPerformed
         // TODO add your handling code here:
-        if(txt_User.getText().equals("PRUEBA")){
-            Principal p = new Principal();
-            p.setVisible(true);
-            this.dispose();
+        String user = txt_User.getText();
+        String password = new String(txt_Password.getPassword());
+        int result = 0;
+        
+        try {
+            result = login.checkLogin(user, password, cms.getDBConncetion());
+            System.out.println(result);
+            
+            if(result > 0){
+                login.setUser(user);
+                login.setPass(password);
+                
+                cms.getDBConncetion();
+                Principal p = new Principal();
+                p.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Valide su usuario y clave o comuniquese con el administrador del sistema", "Credenciales erradas", JOptionPane.ERROR_MESSAGE);
+                txt_Password.setText("");
+                txt_User.setText("");
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }//GEN-LAST:event_btn_IngresarActionPerformed
 
     private void lbl_ExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_ExitMouseClicked

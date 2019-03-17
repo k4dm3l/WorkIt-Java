@@ -5,11 +5,18 @@
  */
 package GUI;
 
+import Logic.LoginLogic;
+import Logic.PrincipalLogic;
+import Persistencia.ConnectionMySQL;
 import com.sun.awt.AWTUtilities;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.JTableHeader;
@@ -26,36 +33,38 @@ public class Principal extends javax.swing.JFrame {
     Facturacion f;
     Caja c;
     
-    public Principal() {
+    ConnectionMySQL cmSQL;
+    PrincipalLogic pl;
+    LoginLogic lg;
+    
+    public Principal()  {
         initComponents();
         
         btn_opcClientes.setVisible(false);
         btn_opcUsuarios.setVisible(false);
         btn_opcProductos.setVisible(false);
         
-        p = new Pedidos( );
-        f = new Facturacion( );
-        c = new Caja( );
-        
+        //INICIALIZACIONES
+            p = new Pedidos( );
+            f = new Facturacion( );
+            c = new Caja( );
+            //Singleton
+            cmSQL = ConnectionMySQL.getInstance();
+            pl = PrincipalLogic.getInstance();
+            lg = LoginLogic.getInstance();
+            
+        //SETS
         panelCarga.setViewportView(p);
+        try {
+            lbl_Usuario.setText(lbl_Usuario.getText() + ""+pl.getUserName(lg.getUser(), lg.getPass(), cmSQL.getDBConncetion()));
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         Shape form = new RoundRectangle2D.Double(0, 0, this.getBounds().width, this.getBounds().height, 10, 10);
         AWTUtilities.setWindowShape(this, form);
-        /*
-        tbl_ListProductos.setBackground(Color.WHITE);
-        tbl_Pedidos.setBackground(Color.WHITE);
-        tbl_NuevoPedido.setBackground(Color.WHITE);
-        
-        Font f = new Font("Segoe UI Light", Font.BOLD, 12);
-        
-        JTableHeader th = tbl_Pedidos.getTableHeader();
-        JTableHeader th1 = tbl_ListProductos.getTableHeader();
-        JTableHeader th2 = tbl_NuevoPedido.getTableHeader();
-        th.setFont(f);
-        th1.setFont(f);
-        th2.setFont(f);
-        */
-        
     }
     
     @SuppressWarnings("unchecked")
@@ -88,6 +97,7 @@ public class Principal extends javax.swing.JFrame {
         btn_opcSalir = new javax.swing.JPanel();
         lbl_IconClientes1 = new javax.swing.JLabel();
         lbl_Clientes1 = new javax.swing.JLabel();
+        lbl_Usuario = new javax.swing.JLabel();
         panelCarga = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -270,7 +280,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(lbl_IconProductos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbl_Productos, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         btn_opcProductosLayout.setVerticalGroup(
             btn_opcProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,7 +319,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(lbl_IconClientes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbl_Clientes, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         btn_opcClientesLayout.setVerticalGroup(
             btn_opcClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -389,7 +399,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(lbl_IconClientes1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbl_Clientes1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         btn_opcSalirLayout.setVerticalGroup(
             btn_opcSalirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -401,9 +411,14 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        panel_SidePanel.add(btn_opcSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 550, 260, -1));
+        panel_SidePanel.add(btn_opcSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 600, 260, -1));
 
-        getContentPane().add(panel_SidePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 630));
+        lbl_Usuario.setFont(new java.awt.Font("Segoe UI Light", 1, 14)); // NOI18N
+        lbl_Usuario.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_Usuario.setText("Bienvenid@ ");
+        panel_SidePanel.add(lbl_Usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 560, -1, -1));
+
+        getContentPane().add(panel_SidePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 660));
 
         panelCarga.setBackground(new java.awt.Color(255, 255, 255));
         panelCarga.setBorder(null);
@@ -417,7 +432,7 @@ public class Principal extends javax.swing.JFrame {
                 panelCargaMousePressed(evt);
             }
         });
-        getContentPane().add(panelCarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 540, 570));
+        getContentPane().add(panelCarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 560, 600));
 
         pack();
         setLocationRelativeTo(null);
@@ -607,6 +622,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_IconUsuarios;
     private javax.swing.JLabel lbl_Pedidos;
     private javax.swing.JLabel lbl_Productos;
+    private javax.swing.JLabel lbl_Usuario;
     private javax.swing.JLabel lbl_Usuarios;
     private javax.swing.JScrollPane panelCarga;
     private javax.swing.JPanel panel_SidePanel;
