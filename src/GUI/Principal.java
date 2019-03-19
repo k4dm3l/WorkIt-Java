@@ -45,7 +45,7 @@ public class Principal extends javax.swing.JFrame {
         btn_opcProductos.setVisible(false);
         
         //INICIALIZACIONES
-            p = new Pedidos( );
+            p = new Pedidos();
             f = new Facturacion( );
             c = new Caja( );
             //Singleton
@@ -411,14 +411,14 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        panel_SidePanel.add(btn_opcSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 600, 260, -1));
+        panel_SidePanel.add(btn_opcSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 670, 260, -1));
 
         lbl_Usuario.setFont(new java.awt.Font("Segoe UI Light", 1, 14)); // NOI18N
         lbl_Usuario.setForeground(new java.awt.Color(255, 255, 255));
         lbl_Usuario.setText("Bienvenid@ ");
-        panel_SidePanel.add(lbl_Usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 560, -1, -1));
+        panel_SidePanel.add(lbl_Usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 610, -1, -1));
 
-        getContentPane().add(panel_SidePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 660));
+        getContentPane().add(panel_SidePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 730));
 
         panelCarga.setBackground(new java.awt.Color(255, 255, 255));
         panelCarga.setBorder(null);
@@ -432,7 +432,7 @@ public class Principal extends javax.swing.JFrame {
                 panelCargaMousePressed(evt);
             }
         });
-        getContentPane().add(panelCarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 560, 600));
+        getContentPane().add(panelCarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 560, 670));
 
         pack();
         setLocationRelativeTo(null);
@@ -525,7 +525,22 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_panel_SidePanelMouseDragged
 
     private void btn_opcSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_opcSalirMouseClicked
-        System.exit(0);
+        int dialogOption = JOptionPane.YES_NO_OPTION;
+        int result = 0;
+        
+       result = JOptionPane.showConfirmDialog(null, "Desas salir?", "Salir del Sistema",dialogOption);
+        
+        if(result == 0){
+            try {
+                cmSQL.closeDBConnection();
+                JOptionPane.showMessageDialog(null, "Adios", "Salir del sistema", JOptionPane.INFORMATION_MESSAGE);
+                System.exit(0);
+            } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+                JOptionPane.showMessageDialog(null, "OK", "Salir del sistema", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btn_opcSalirMouseClicked
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed

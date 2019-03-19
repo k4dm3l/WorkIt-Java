@@ -3,6 +3,7 @@ package GUI;
 import Logic.LoginLogic;
 import Persistencia.ConnectionMySQL;
 import com.sun.awt.AWTUtilities;
+import com.sun.glass.events.KeyEvent;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 import java.sql.Connection;
@@ -137,6 +138,9 @@ public class Login extends javax.swing.JFrame {
         txt_User.setForeground(new java.awt.Color(255, 255, 255));
         txt_User.setBorder(null);
         txt_User.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_UserKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txt_UserKeyTyped(evt);
             }
@@ -146,6 +150,11 @@ public class Login extends javax.swing.JFrame {
         txt_Password.setFont(new java.awt.Font("Segoe UI Light", 1, 16)); // NOI18N
         txt_Password.setForeground(new java.awt.Color(255, 255, 255));
         txt_Password.setBorder(null);
+        txt_Password.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_PasswordKeyPressed(evt);
+            }
+        });
 
         lbl_UserIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_UserIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Multimedia/User.png"))); // NOI18N
@@ -237,48 +246,54 @@ public class Login extends javax.swing.JFrame {
 
     private void btn_IngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_IngresarActionPerformed
         // TODO add your handling code here:
-        String user = txt_User.getText();
-        String password = new String(txt_Password.getPassword());
-        int result = 0;
-        
-        try {
-            result = login.checkLogin(user, password, cms.getDBConncetion());
-            System.out.println(result);
-            
-            if(result > 0){
-                login.setUser(user);
-                login.setPass(password);
-                
-                cms.getDBConncetion();
-                Principal p = new Principal();
-                p.setVisible(true);
-                this.dispose();
+            String user = txt_User.getText();
+            String password = new String(txt_Password.getPassword());
+            int result = 0;
+
+            if(user.equals("")){
+                JOptionPane.showMessageDialog(null, "Campo Usuario Obligatorio", "Credenciales Erradas", JOptionPane.ERROR_MESSAGE);
+                txt_User.requestFocus();
             } else {
-                JOptionPane.showMessageDialog(null, "Valide su usuario y clave o comuniquese con el administrador del sistema", "Credenciales erradas", JOptionPane.ERROR_MESSAGE);
-                txt_Password.setText("");
-                txt_User.setText("");
+                if(password.equals("")){
+                    JOptionPane.showMessageDialog(null, "Campo Clave Obligatorio", "Credenciales Erradas", JOptionPane.ERROR_MESSAGE);
+                    txt_Password.requestFocus();
+                } else {
+                    try {
+                        result = login.checkLogin(user, password, cms.getDBConncetion());
+
+                        if(result > 0){
+                            login.setUser(user);
+                            login.setPass(password);
+                            Principal p = new Principal();
+                            p.setVisible(true);
+                            this.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Valide su usuario y clave o comuniquese con el administrador del sistema", "Credenciales Erradas", JOptionPane.ERROR_MESSAGE);
+                            txt_Password.setText("");
+                            txt_User.setText("");
+                        }
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
     }//GEN-LAST:event_btn_IngresarActionPerformed
 
     private void lbl_ExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_ExitMouseClicked
         // TODO add your handling code here:
         int dialogOption = JOptionPane.YES_NO_OPTION;
+        int result = 0;
         
-        JOptionPane.showConfirmDialog(null, "Desas salir?", "Salir del Sistema",dialogOption);
+       result = JOptionPane.showConfirmDialog(null, "Desas salir?", "Salir del Sistema",dialogOption);
         
-        if(dialogOption == JOptionPane.YES_OPTION){
-            System.exit(0);
+        if(result == 0){
+                JOptionPane.showMessageDialog(null, "Adios", "Salir del sistema", JOptionPane.INFORMATION_MESSAGE);
+                System.exit(0);
         } else {
-            if(dialogOption == JOptionPane.NO_OPTION){
-                remove(dialogOption);
-            }
-        }
+            JOptionPane.showMessageDialog(null, "OK", "Salir del sistema", JOptionPane.INFORMATION_MESSAGE);
+           }
     }//GEN-LAST:event_lbl_ExitMouseClicked
 
     private void txt_UserKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_UserKeyTyped
@@ -301,6 +316,86 @@ public class Login extends javax.swing.JFrame {
         int y = evt.getYOnScreen();
         this.setLocation(x - xx, y - xy);
     }//GEN-LAST:event_formMouseDragged
+
+    private void txt_UserKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_UserKeyPressed
+        // TODO add your handling code here: PRESIONAR ENTER PARA LOGUEARSE
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String user = txt_User.getText();
+            String password = new String(txt_Password.getPassword());
+            int result = 0;
+
+            if(user.equals("")){
+                JOptionPane.showMessageDialog(null, "Campo Usuario Obligatorio", "Credenciales Erradas", JOptionPane.ERROR_MESSAGE);
+                txt_User.requestFocus();
+            } else {
+                if(password.equals("")){
+                    JOptionPane.showMessageDialog(null, "Campo Clave Obligatorio", "Credenciales Erradas", JOptionPane.ERROR_MESSAGE);
+                    txt_Password.requestFocus();
+                } else {
+                    try {
+                        result = login.checkLogin(user, password, cms.getDBConncetion());
+                        System.out.println(result);
+
+                        if(result > 0){
+                            login.setUser(user);
+                            login.setPass(password);
+                            Principal p = new Principal();
+                            p.setVisible(true);
+                            this.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Valide su usuario y clave o comuniquese con el administrador del sistema", "Credenciales Erradas", JOptionPane.ERROR_MESSAGE);
+                            txt_Password.setText("");
+                            txt_User.setText("");
+                        }
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_txt_UserKeyPressed
+
+    private void txt_PasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_PasswordKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String user = txt_User.getText();
+            String password = new String(txt_Password.getPassword());
+            int result = 0;
+
+            if(user.equals("")){
+                JOptionPane.showMessageDialog(null, "Campo Usuario Obligatorio", "Credenciales Erradas", JOptionPane.ERROR_MESSAGE);
+                txt_User.requestFocus();
+            } else {
+                if(password.equals("")){
+                    JOptionPane.showMessageDialog(null, "Campo Clave Obligatorio", "Credenciales Erradas", JOptionPane.ERROR_MESSAGE);
+                    txt_Password.requestFocus();
+                } else {
+                    try {
+                        result = login.checkLogin(user, password, cms.getDBConncetion());
+                        System.out.println(result);
+
+                        if(result > 0){
+                            login.setUser(user);
+                            login.setPass(password);
+                            Principal p = new Principal();
+                            p.setVisible(true);
+                            this.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Valide su usuario y clave o comuniquese con el administrador del sistema", "Credenciales Erradas", JOptionPane.ERROR_MESSAGE);
+                            txt_Password.setText("");
+                            txt_User.setText("");
+                        }
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_txt_PasswordKeyPressed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
