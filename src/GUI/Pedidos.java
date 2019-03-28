@@ -7,6 +7,7 @@ import Logic.PedidosLogic;
 import Logic.Utilidades;
 import Persistencia.ConnectionMySQL;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
  * @author Camilo
  */
 public class Pedidos extends javax.swing.JPanel {
+    DecimalFormat df;
+    
     DefaultTableModel dfmTablePedido;
     DefaultTableModel dfmTable;
     
@@ -47,6 +50,8 @@ public class Pedidos extends javax.swing.JPanel {
         
         clg = CajaLogic.getInstance();
         clg.setId_Ape(0);
+        
+        df = new DecimalFormat("#,###");
         
         try {
                 p = new PedidosLogic();
@@ -227,9 +232,10 @@ public class Pedidos extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Id Cliente:");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("Items:");
 
+        lbl_CantItems.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lbl_CantItems.setText("jLabel4");
 
         btn_crearPedido.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -243,9 +249,10 @@ public class Pedidos extends javax.swing.JPanel {
         btn_CancelarPedido.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btn_CancelarPedido.setText("Cancelar Pedido");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setText("Total $:");
 
+        lbl_TotalPedido.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lbl_TotalPedido.setText("jLabel4");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -260,9 +267,10 @@ public class Pedidos extends javax.swing.JPanel {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setText("Cliente:");
 
+        lbl_nomCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lbl_nomCliente.setText("jLabel6");
 
         btn_BuscarCliente.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -292,32 +300,34 @@ public class Pedidos extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txt_BuscarId, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btn_BuscarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btn_CancelarPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                                    .addComponent(btn_crearPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lbl_TotalPedido))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lbl_CantItems)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lbl_TotalPedido)
-                                        .addGap(108, 108, 108)
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lbl_nomCliente))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(txt_BuscarId, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(btn_BuscarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(btn_CancelarPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                                            .addComponent(btn_crearPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                        .addComponent(lbl_CantItems)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lbl_nomCliente)
+                                    .addComponent(jLabel4))
+                                .addGap(158, 158, 158)))
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -345,16 +355,18 @@ public class Pedidos extends javax.swing.JPanel {
                         .addComponent(btn_CancelarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btn_BuscarCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(lbl_CantItems)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_nomCliente)
                     .addComponent(jLabel5)
-                    .addComponent(lbl_TotalPedido)
-                    .addComponent(jLabel4)
-                    .addComponent(lbl_nomCliente))
-                .addGap(54, 54, 54))
+                    .addComponent(lbl_TotalPedido))
+                .addGap(21, 21, 21))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -370,19 +382,12 @@ public class Pedidos extends javax.swing.JPanel {
         } else {
                 if(idCliente <= 0){
                     JOptionPane.showMessageDialog(null, "Debes asignar un cliente existente", "Error Creacion Pedido", JOptionPane.ERROR_MESSAGE);
+                    txt_BuscarId.requestFocus();
                 } else {
                     if(idAper < 1){
                         JOptionPane.showMessageDialog(null, "No existe caja abierta. Proceda a abrir una caja", "Error Creacion Pedido", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        /*
-                        Se tiene que validar antes de realizar los insert - PENDIENTE!!!
-                        IdAperturaCaja
-                    */
-                    System.out.println("Id Apertura: "+clg.getId_Ape());
                     int idFact = 0;
-                    
-                    //Aqui se debe realizar el INSERT factura generada
-                    System.out.println("Variables Insert FACTURA_VENTA: "+tbl_Pedido.getRowCount()+" - "+totalPedido+"\n");
                     p.createOrderBill(tbl_Pedido.getRowCount(), totalPedido);
                     //Aqui se debe capturar el ID de la ultima factura generada
                     idFact = p.getLastBill();
@@ -420,7 +425,6 @@ public class Pedidos extends javax.swing.JPanel {
                     //Aqui codigo para imprimir RECIBO DE PEDIDO
                     System.out.println("PENDIENTE IMPRIMIR RECIBO DE PEDIDO");
                     
-                    System.out.println("Borrar de datos OK");
                     ul = Utilidades.getInstance();
                     
                     idCliente = 0;
@@ -430,6 +434,8 @@ public class Pedidos extends javax.swing.JPanel {
                     lbl_TotalPedido.setText(""+totalPedido);
                     lbl_CantItems.setText(""+tbl_Pedido.getRowCount());
                     lbl_nomCliente.setText("SIN DATOS");
+                    
+                    lbl_TotalPedido.setText(df.format(Integer.valueOf(lbl_TotalPedido.getText().replace(".", "").replace(",", ""))));
                     
                     JOptionPane.showMessageDialog(null, "Pedido creado exitosamente", "Creacion Pedido", JOptionPane.INFORMATION_MESSAGE);
                     
@@ -469,9 +475,13 @@ public class Pedidos extends javax.swing.JPanel {
             if(tbl_Pedido.getRowCount() == 0){
                 totalPedido = 0;
                 lbl_TotalPedido.setText(""+totalPedido);
+                
+                lbl_TotalPedido.setText(df.format(Integer.valueOf(lbl_TotalPedido.getText().replace(".", "").replace(",", ""))));
             } else {
                 totalPedido = totalPedido - vlrResta;
                 lbl_TotalPedido.setText(""+totalPedido);
+                
+                lbl_TotalPedido.setText(df.format(Integer.valueOf(lbl_TotalPedido.getText().replace(".", "").replace(",", ""))));
             }
             
             lbl_CantItems.setText(""+tbl_Pedido.getRowCount());
@@ -529,6 +539,9 @@ public class Pedidos extends javax.swing.JPanel {
                 lbl_CantItems.setText(""+tbl_Pedido.getRowCount());
                 totalPedido = totalPedido + ((Integer)dfmTablePedido.getValueAt(tbl_Pedido.getRowCount()-1, 4));
                 lbl_TotalPedido.setText(""+totalPedido);
+                
+                lbl_TotalPedido.setText(df.format(Integer.valueOf(lbl_TotalPedido.getText().replace(".", "").replace(",", ""))));
+                
         } else {
             System.out.println("Error selecciona fila");
         }

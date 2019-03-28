@@ -366,8 +366,8 @@ public class Facturacion extends javax.swing.JPanel {
                     lbl_TotalVenta.setText(""+total);
                     lbl_IdPedido.setText(txt_ConsultarPedido.getText());
                     lbl_CantItems.setText(""+tbl_ItemsPedido.getRowCount());
-                    lbl_IdCliente.setText(""+fl.getClient(9, 3).getIdCliente());
-                    lbl_NombreCliente.setText(fl.getClient(9, 3).getNomCliente());
+                    lbl_IdCliente.setText(""+fl.getClient(cl.getId_Ape(), pedido).getIdCliente());
+                    lbl_NombreCliente.setText(fl.getClient(cl.getId_Ape(), pedido).getNomCliente());
 
                     txt_ConsultarPedido.setText("");
                     txt_DineroRecibido.setEnabled(true);

@@ -559,6 +559,7 @@ public class Caja extends javax.swing.JPanel {
                     lbl_TotalVentas.setText("0");
                     
                     lbl_SaldoApertura.setText(df.format(Integer.valueOf(lbl_SaldoApertura.getText().replace(".", "").replace(".", ""))));
+                    lbl_TotalVentas.setText(df.format(Integer.valueOf(lbl_TotalVentas.getText().replace(".", "").replace(".", ""))));
                     
                     txt_saldoApertura.setText("");
                     System.out.println("PENDIENTE IMPRIMIR RECIBO DE APERTURA");

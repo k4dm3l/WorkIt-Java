@@ -34,7 +34,7 @@ public class LoginLogic {
     
     public int checkLogin(String user, String password, Connection conDB) throws SQLException{
         int result = 0;
-        String SSQL = "SELECT nom_usuario, id_doc_usuario FROM usuarios WHERE nick_usuario = '"+user+"' AND clave_usuario= '"+password+"'";
+        String SSQL = "SELECT nom_usuario, id_doc_usuario FROM usuarios WHERE nick_usuario = '"+user+"' AND clave_usuario=sha1('"+password+"')";
         
         try{
                 Statement st =  (Statement) conDB.createStatement();

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,6 +27,7 @@ public class Login extends javax.swing.JFrame {
     
     public Login() {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("../Multimedia/TurtleIcon.png")).getImage());
         Shape form = new RoundRectangle2D.Double(0, 0, this.getBounds().width, this.getBounds().height, 10, 10);
         AWTUtilities.setWindowShape(this, form);
         
@@ -247,7 +249,7 @@ public class Login extends javax.swing.JFrame {
     private void btn_IngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_IngresarActionPerformed
         // TODO add your handling code here:
             String user = txt_User.getText();
-            String password = new String(txt_Password.getPassword());
+            String password = String.valueOf(txt_Password.getPassword());
             int result = 0;
 
             if(user.equals("")){

@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -45,6 +46,7 @@ public class Principal extends javax.swing.JFrame {
     
     public Principal()  {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("../Multimedia/TurtleIcon.png")).getImage());
         
         btn_opcClientes.setVisible(false);
         btn_opcUsuarios.setVisible(false);
