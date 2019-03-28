@@ -15,9 +15,12 @@ import javax.swing.JOptionPane;
 public class LoginLogic {
     
     private static LoginLogic loginlogic;
+    
+    private static int user_ID;
     private static String user;
     private static String pass;
-    //Singleton
+    
+//Singleton
     private LoginLogic (){
         
     }
@@ -31,7 +34,7 @@ public class LoginLogic {
     
     public int checkLogin(String user, String password, Connection conDB) throws SQLException{
         int result = 0;
-        String SSQL = "SELECT nom_usuario FROM usuarios WHERE nick_usuario = '"+user+"' AND clave_usuario= '"+password+"'";
+        String SSQL = "SELECT nom_usuario, id_doc_usuario FROM usuarios WHERE nick_usuario = '"+user+"' AND clave_usuario= '"+password+"'";
         
         try{
                 Statement st =  (Statement) conDB.createStatement();
@@ -40,6 +43,7 @@ public class LoginLogic {
                 if(rs.next()){
                     result = 1 + result;
                     JOptionPane.showMessageDialog(null, "Bienvenido "+rs.getString(1), "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
+                    user_ID = rs.getInt(2);
                 }  else {
                     //conDB.close();
                 }
@@ -64,6 +68,14 @@ public class LoginLogic {
     
     public String getPass(){
         return pass;
+    }
+    
+    public int getUserID(){
+        return user_ID;
+    }
+    
+    public void setUserID(int id){
+        LoginLogic.user_ID = id;
     }
     
 }

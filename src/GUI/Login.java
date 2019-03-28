@@ -259,7 +259,7 @@ public class Login extends javax.swing.JFrame {
                     txt_Password.requestFocus();
                 } else {
                     try {
-                        result = login.checkLogin(user, password, cms.getDBConncetion());
+                        result = login.checkLogin(user, password, cms.getDBConnection());
 
                         if(result > 0){
                             login.setUser(user);
@@ -333,9 +333,8 @@ public class Login extends javax.swing.JFrame {
                     txt_Password.requestFocus();
                 } else {
                     try {
-                        result = login.checkLogin(user, password, cms.getDBConncetion());
-                        System.out.println(result);
-
+                        result = login.checkLogin(user, password, cms.getDBConnection());
+                        
                         if(result > 0){
                             login.setUser(user);
                             login.setPass(password);
@@ -373,8 +372,7 @@ public class Login extends javax.swing.JFrame {
                     txt_Password.requestFocus();
                 } else {
                     try {
-                        result = login.checkLogin(user, password, cms.getDBConncetion());
-                        System.out.println(result);
+                        result = login.checkLogin(user, password, cms.getDBConnection());
 
                         if(result > 0){
                             login.setUser(user);

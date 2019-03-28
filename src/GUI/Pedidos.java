@@ -1,7 +1,10 @@
 package GUI;
 
+import Logic.CajaLogic;
 import Logic.ClientesLogic;
+import Logic.LoginLogic;
 import Logic.PedidosLogic;
+import Logic.Utilidades;
 import Persistencia.ConnectionMySQL;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -15,7 +18,6 @@ import javax.swing.table.DefaultTableModel;
  * @author Camilo
  */
 public class Pedidos extends javax.swing.JPanel {
-    PedidosLogic p;
     DefaultTableModel dfmTablePedido;
     DefaultTableModel dfmTable;
     
@@ -24,7 +26,12 @@ public class Pedidos extends javax.swing.JPanel {
     
     ConnectionMySQL cms;
     ClientesLogic cl;
+    CajaLogic clg;
+    Utilidades ul;
+    PedidosLogic p;
+    LoginLogic log;
     
+    int idCliente;
     int totalPedido = 0;
     int rowPedidoSelected = 0;
     int vlrResta;
@@ -37,6 +44,9 @@ public class Pedidos extends javax.swing.JPanel {
         lbl_CantItems.setText("0");
         lbl_TotalPedido.setText("0");
         lbl_nomCliente.setText("SIN DATOS");
+        
+        clg = CajaLogic.getInstance();
+        clg.setId_Ape(0);
         
         try {
                 p = new PedidosLogic();
@@ -69,7 +79,7 @@ public class Pedidos extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_Productos = new javax.swing.JTable();
         txt_Buscar = new javax.swing.JTextField();
-        btn_Buscar = new javax.swing.JButton();
+        btn_BuscarProducto = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_Pedido = new javax.swing.JTable();
@@ -162,11 +172,11 @@ public class Pedidos extends javax.swing.JPanel {
             }
         });
 
-        btn_Buscar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btn_Buscar.setText("Buscar");
-        btn_Buscar.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn_BuscarProducto.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btn_BuscarProducto.setText("Buscar");
+        btn_BuscarProducto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btn_BuscarMouseClicked(evt);
+                btn_BuscarProductoMouseClicked(evt);
             }
         });
 
@@ -276,7 +286,7 @@ public class Pedidos extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txt_Buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btn_Buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btn_BuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(22, 22, 22))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,7 +329,7 @@ public class Pedidos extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_Buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_Buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_BuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -350,6 +360,82 @@ public class Pedidos extends javax.swing.JPanel {
 
     private void btn_crearPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_crearPedidoActionPerformed
         // TODO add your handling code here:
+        int idAper;
+        clg = CajaLogic.getInstance();
+        
+        idAper = clg.getId_Ape();
+        
+        if(tbl_Pedido.getRowCount() <= 0){
+            JOptionPane.showMessageDialog(null, "No se ha agregado ningun item para este pedido", "Error Creacion Pedido", JOptionPane.ERROR_MESSAGE);
+        } else {
+                if(idCliente <= 0){
+                    JOptionPane.showMessageDialog(null, "Debes asignar un cliente existente", "Error Creacion Pedido", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    if(idAper < 1){
+                        JOptionPane.showMessageDialog(null, "No existe caja abierta. Proceda a abrir una caja", "Error Creacion Pedido", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        /*
+                        Se tiene que validar antes de realizar los insert - PENDIENTE!!!
+                        IdAperturaCaja
+                    */
+                    System.out.println("Id Apertura: "+clg.getId_Ape());
+                    int idFact = 0;
+                    
+                    //Aqui se debe realizar el INSERT factura generada
+                    System.out.println("Variables Insert FACTURA_VENTA: "+tbl_Pedido.getRowCount()+" - "+totalPedido+"\n");
+                    p.createOrderBill(tbl_Pedido.getRowCount(), totalPedido);
+                    //Aqui se debe capturar el ID de la ultima factura generada
+                    idFact = p.getLastBill();
+                    /*
+                        Aqui se realiza la toma de los elementos a insertar dentro de PEDIDOS y dentro del ciclo FOR
+                        Se debe realizar el respectivo INSERT para cada uno de los items
+                    */
+                    int idprod = 0;
+                    int precioUnitario = 0;
+                    int cantprod = 0;
+                    int totalProd = 0;
+                    log = LoginLogic.getInstance();
+                    
+                    for(int i = 0; i < tbl_Pedido.getRowCount(); i++){
+                     idprod  = (Integer) tbl_Pedido.getValueAt(i, 0);
+                     precioUnitario = (Integer) tbl_Pedido.getValueAt(i, 2);
+                     cantprod = (Integer) tbl_Pedido.getValueAt(i, 3);
+                     totalProd = (Integer) tbl_Pedido.getValueAt(i, 4);
+                     /*       
+                     System.out.print("\nINSERT \n"
+                        + "Pedido: "+idFact+"\n"
+                        + "Id Factura: "+idFact+"\n"
+                        + "Id Producto: "+idprod+"\n"
+                        + "Doc User:"+log.getUserID()+" \n"//Requiere DOC USUARIO
+                        + "Doc Client:"+cl.getId_Cliente()+" \n"
+                        + "Id AperCaja: "+clg.getId_Ape()+"\n"
+                        + "Precio Unitario Producto: "+precioUnitario+"\n"
+                        + "Cantidad Producto: "+cantprod+"\n"
+                        + "Total Producto: "+totalProd+"\n"
+                      );
+                     */
+                     p.createOrder(idFact, idFact, idprod, log.getUserID(), cl.getId_Cliente(), clg.getId_Ape(), precioUnitario, cantprod, totalProd);
+                     
+                    }
+                    //Aqui codigo para imprimir RECIBO DE PEDIDO
+                    System.out.println("PENDIENTE IMPRIMIR RECIBO DE PEDIDO");
+                    
+                    System.out.println("Borrar de datos OK");
+                    ul = Utilidades.getInstance();
+                    
+                    idCliente = 0;
+                    totalPedido = 0;
+                    
+                    ul.cleanTable(tbl_Pedido);
+                    lbl_TotalPedido.setText(""+totalPedido);
+                    lbl_CantItems.setText(""+tbl_Pedido.getRowCount());
+                    lbl_nomCliente.setText("SIN DATOS");
+                    
+                    JOptionPane.showMessageDialog(null, "Pedido creado exitosamente", "Creacion Pedido", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    }
+                }
+        }
     }//GEN-LAST:event_btn_crearPedidoActionPerformed
 
     private void txt_BuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_BuscarKeyReleased
@@ -365,11 +451,11 @@ public class Pedidos extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txt_BuscarKeyTyped
 
-    private void btn_BuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_BuscarMouseClicked
+    private void btn_BuscarProductoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_BuscarProductoMouseClicked
         // TODO add your handling code here:
         p.productFilter(txt_Buscar.getText(), tbl_Productos);
         dfmTable = (DefaultTableModel) tbl_Productos.getModel();
-    }//GEN-LAST:event_btn_BuscarMouseClicked
+    }//GEN-LAST:event_btn_BuscarProductoMouseClicked
 
     private void tbl_ProductosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_ProductosMousePressed
         // TODO add your handling code here:
@@ -465,17 +551,23 @@ public class Pedidos extends javax.swing.JPanel {
         if(txt_BuscarId.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Debe ingresar un numero de identificacion del cliente", "Error datos", JOptionPane.ERROR_MESSAGE);
         } else {
-            cl = new ClientesLogic();
+            cl = ClientesLogic.getInstance();
             cl.searchClient(Integer.parseInt(txt_BuscarId.getText()));
             
             if(cl.getId_Cliente() == 0 || cl.getNomCliente() == null){
                 JOptionPane.showMessageDialog(null, "El cliente no existe", "Error datos", JOptionPane.ERROR_MESSAGE);
+                txt_BuscarId.requestFocus();
+                txt_BuscarId.setText("");
+                
                 lbl_nomCliente.setText("SIN DATOS");
+                idCliente = 0;
             } else {
                 JOptionPane.showMessageDialog(null, "Cliente Encontrado", "Exito", JOptionPane.INFORMATION_MESSAGE);
                 txt_BuscarId.requestFocus();
                 txt_BuscarId.setText("");
+                
                 lbl_nomCliente.setText(cl.getNomCliente());
+                idCliente = cl.getId_Cliente();
             }
         }
     }//GEN-LAST:event_btn_BuscarClienteActionPerformed
@@ -487,32 +579,36 @@ public class Pedidos extends javax.swing.JPanel {
         if(checkTyped < '0' || checkTyped > '9'){
             evt.consume();
         }
-        
-        
     }//GEN-LAST:event_txt_BuscarIdKeyTyped
 
     private void txt_BuscarIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_BuscarIdKeyPressed
         // TODO add your handling code here:
         if(evt.getExtendedKeyCode() == 10){
-            cl = new ClientesLogic();
+            cl = ClientesLogic.getInstance();
             cl.searchClient(Integer.parseInt(txt_BuscarId.getText()));
             
             if(cl.getId_Cliente() == 0 || cl.getNomCliente() == null){
                 JOptionPane.showMessageDialog(null, "El cliente no existe", "Error datos", JOptionPane.ERROR_MESSAGE);
+                txt_BuscarId.requestFocus();
+                txt_BuscarId.setText("");
+                
                 lbl_nomCliente.setText("SIN DATOS");
+                idCliente = 0;
             } else {
                 JOptionPane.showMessageDialog(null, "Cliente Encontrado", "Exito", JOptionPane.INFORMATION_MESSAGE);
                 txt_BuscarId.requestFocus();
                 txt_BuscarId.setText("");
+                
                 lbl_nomCliente.setText(cl.getNomCliente());
+                idCliente = cl.getId_Cliente();
             }
         }
     }//GEN-LAST:event_txt_BuscarIdKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_Buscar;
     private javax.swing.JButton btn_BuscarCliente;
+    private javax.swing.JButton btn_BuscarProducto;
     private javax.swing.JButton btn_CancelarPedido;
     private javax.swing.JButton btn_crearPedido;
     private javax.swing.JLabel jLabel1;

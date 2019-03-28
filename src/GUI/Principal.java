@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import Logic.CajaLogic;
 import Logic.LoginLogic;
 import Logic.PrincipalLogic;
 import Persistencia.ConnectionMySQL;
@@ -19,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 /**
@@ -29,6 +31,9 @@ public class Principal extends javax.swing.JFrame {
     
     int xx = 0;
     int xy = 0;
+    
+    int openBoxes;
+    
     Pedidos p;
     Facturacion f;
     Caja c;
@@ -36,6 +41,7 @@ public class Principal extends javax.swing.JFrame {
     ConnectionMySQL cmSQL;
     PrincipalLogic pl;
     LoginLogic lg;
+    CajaLogic cl;
     
     public Principal()  {
         initComponents();
@@ -48,15 +54,19 @@ public class Principal extends javax.swing.JFrame {
             p = new Pedidos();
             f = new Facturacion( );
             c = new Caja( );
+            
             //Singleton
+            cl = CajaLogic.getInstance();
             cmSQL = ConnectionMySQL.getInstance();
             pl = PrincipalLogic.getInstance();
             lg = LoginLogic.getInstance();
             
+            cl.setId_Ape(0);
+            
         //SETS
         panelCarga.setViewportView(p);
         try {
-            lbl_Usuario.setText(lbl_Usuario.getText() + ""+pl.getUserName(lg.getUser(), lg.getPass(), cmSQL.getDBConncetion()));
+            lbl_Usuario.setText(lbl_Usuario.getText() + ""+pl.getUserName(lg.getUser(), lg.getPass(), cmSQL.getDBConnection()));
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -509,6 +519,37 @@ public class Principal extends javax.swing.JFrame {
         resetBackgroundColor(btn_opcClientes);
         
         panelCarga.setViewportView(c);
+        //CODIGO PARA CARGAR FACTURAS DE PEDIDOS YA VENDIDOS
+        c.dfmTableFacVen = (DefaultTableModel) c.getTableFacturaVentas().getModel();
+        c.ListFacVen = cl.getSales(cl.getId_Ape());
+        c.dfmTableFacVen.setNumRows(0);
+        
+        for(int i = 0; i < c.ListFacVen.size(); i++){
+            Object [ ] row = {
+                c.ListFacVen.get(i).getId_FacVen(),
+                c.ListFacVen.get(i).getVlrFacVen()
+            };
+            c.dfmTableFacVen.addRow(row);
+        }
+        
+        //CODIGO PARA CARGAR PEDIDOS ABIERTOS DESDE BTN CAJA
+        c.dfmTablePedAbiertos = (DefaultTableModel) c.getTablePedidosAbiertos().getModel();
+        c.ListPedAbiertos = cl.getOpenOrders(cl.getId_Ape());
+        c.dfmTablePedAbiertos.setNumRows(0);
+        
+        for(int j = 0; j < c.ListPedAbiertos.size(); j++){
+            Object [ ] row = {
+                c.ListPedAbiertos.get(j).getId_Ped(),
+                c.ListPedAbiertos.get(j).getCantItems(),
+                c.ListPedAbiertos.get(j).getVlrTotal()
+            };
+            c.dfmTablePedAbiertos.addRow(row);
+        }
+        
+        c.getLabelPedidosAbiertos().setText(""+c.getTablePedidosAbiertos().getRowCount()); 
+        c.getLabelVentas().setText(""+c.getTableFacturaVentas().getRowCount());
+        c.getLabelTotalVentas().setText(""+cl.getTotalSales(cl.getId_Ape()));
+        
     }//GEN-LAST:event_btn_opcCajaMouseClicked
 
     private void panel_SidePanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panel_SidePanelMousePressed
@@ -527,19 +568,26 @@ public class Principal extends javax.swing.JFrame {
     private void btn_opcSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_opcSalirMouseClicked
         int dialogOption = JOptionPane.YES_NO_OPTION;
         int result = 0;
+        openBoxes = cl.checkOpenBox();
         
-       result = JOptionPane.showConfirmDialog(null, "Desas salir?", "Salir del Sistema",dialogOption);
+        System.out.println(openBoxes);
         
-        if(result == 0){
-            try {
-                cmSQL.closeDBConnection();
-                JOptionPane.showMessageDialog(null, "Adios", "Salir del sistema", JOptionPane.INFORMATION_MESSAGE);
-                System.exit(0);
-            } catch (SQLException ex) {
-                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if((openBoxes != 0)){
+            JOptionPane.showMessageDialog(null, "Actualmente cuenta con una caja abierta, por favor antes de salir del sistema proceda con el cierre de esta", "Salir del sistema", JOptionPane.INFORMATION_MESSAGE);
         } else {
-                JOptionPane.showMessageDialog(null, "OK", "Salir del sistema", JOptionPane.INFORMATION_MESSAGE);
+            result = JOptionPane.showConfirmDialog(null, "Desas salir?", "Salir del Sistema",dialogOption);
+        
+            if(result == 0){
+                try {
+                    cmSQL.closeDBConnection();
+                    JOptionPane.showMessageDialog(null, "Adios", "Salir del sistema", JOptionPane.INFORMATION_MESSAGE);
+                    System.exit(0);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                    JOptionPane.showMessageDialog(null, "OK", "Salir del sistema", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btn_opcSalirMouseClicked
 

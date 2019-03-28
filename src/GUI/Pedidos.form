@@ -53,7 +53,7 @@
                           <Group type="102" attributes="0">
                               <Component id="txt_Buscar" min="-2" pref="335" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="btn_Buscar" min="-2" pref="107" max="-2" attributes="0"/>
+                              <Component id="btn_BuscarProducto" min="-2" pref="107" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
@@ -111,7 +111,7 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="txt_Buscar" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                  <Component id="btn_Buscar" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Component id="btn_BuscarProducto" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="153" max="-2" attributes="0"/>
@@ -216,7 +216,7 @@
         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_BuscarKeyTyped"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btn_Buscar">
+    <Component class="javax.swing.JButton" name="btn_BuscarProducto">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="11" style="1"/>
@@ -224,7 +224,7 @@
         <Property name="text" type="java.lang.String" value="Buscar"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_BuscarMouseClicked"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_BuscarProductoMouseClicked"/>
       </Events>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">

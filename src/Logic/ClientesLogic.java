@@ -15,23 +15,32 @@ import javax.swing.JOptionPane;
  */
 public class ClientesLogic {
     
-    int id_doc_cliente;
-    String nom_cliente;
+    static int id_doc_cliente;
+    static String nom_cliente;
     
-    public  ClientesLogic(){
+    private static ClientesLogic clienteslogic;
+    
+    private  ClientesLogic(){
         
     }
     
-    public ClientesLogic(int id, String nombre){
+    private ClientesLogic(int id, String nombre){
         this.id_doc_cliente = id;
         this.nom_cliente = nombre;
+    }
+    
+    public static ClientesLogic getInstance(){
+        if(clienteslogic == null){
+            clienteslogic = new ClientesLogic(id_doc_cliente, nom_cliente);
+        }
+        return clienteslogic;
     }
     
     public void searchClient(int id){
         String SSQL = "SELECT id_doc_cliente, nom_cliente FROM clientes WHERE id_doc_cliente = "+id;
         
         try {
-            Connection conDB = ConnectionMySQL.getInstance().getDBConncetion();
+            Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
             
             Statement st = (Statement) conDB.createStatement();
             ResultSet rs = st.executeQuery(SSQL);

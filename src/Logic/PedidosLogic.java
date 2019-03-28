@@ -92,10 +92,9 @@ public class PedidosLogic {
     public LinkedList<PedidosLogic>GetProductos() throws ClassNotFoundException{
         LinkedList<PedidosLogic> listadoProductos = new LinkedList<PedidosLogic>();
         String SSQL = "SELECT id_producto, nom_producto, precio_producto_und FROM Productos";
-        
-        
+                
         try {
-            Connection conDB = ConnectionMySQL.getInstance().getDBConncetion();
+            Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
             
             Statement st = (Statement) conDB.createStatement();
             ResultSet rs = st.executeQuery(SSQL);
@@ -123,6 +122,63 @@ public class PedidosLogic {
         
         table.setRowSorter(trs);
         trs.setRowFilter(RowFilter.regexFilter(search));
+    }
+    
+    //Creacion Factura Venta - Creacion Pedido
+    public void createOrderBill(int cantItems, int totalPedido){
+        String SSQL = "INSERT INTO factura_ventas (cantidad_items, vlr_total_fv) VALUES ("+cantItems+", "+totalPedido+")";
+        
+        try {
+            Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
+            Statement st = conDB.createStatement();
+            st.execute(SSQL);
+        } catch(SQLException ex){
+            System.out.println("Exception: "+ex);
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Exception: "+ex);
+        }
+    }
+    
+    //Creacion registro de Pedido x Producto
+    public void createOrder(int idP, int idF, int idProd, int idUs, int idC, int idAp, int pp, int cp, int vlrp) {
+        String SSQL = "INSERT INTO pedidos "
+                + "(id_pedido, FK_id_fact_v, FK_id_producto, FK_id_doc_usuario, FK_id_doc_cliente, FK_aper_caja, precio_producto_und, cantidad_producto, vlr_total_producto)"
+                + " VALUES"
+                + " ("+idP+", "+ idF+", "+ idProd+", "+ idUs+", "+ idC+", "+ idAp+", "+ pp+", "+ cp+", "+ vlrp+")";
+        
+        try {
+            Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
+            Statement st = conDB.createStatement();
+            st.execute(SSQL);
+        } catch(SQLException ex){
+            System.out.println("Exception: "+ex);
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Exception: "+ex);
+        }
+        
+    }
+    
+    //Obtener la ultima factura generada
+    public int getLastBill(){
+        int idFact = 0;
+        String SSQL = "SELECT  max(id_fact_v) FROM factura_ventas";
+        
+        try {
+            Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
+            
+            Statement st = (Statement) conDB.createStatement();
+            ResultSet rs = st.executeQuery(SSQL);
+            
+            while(rs.next()){
+                idFact = rs.getInt(1);
+            }
+            
+        } catch (SQLException ex){
+            System.err.println(ex);
+        } catch (ClassNotFoundException ex) {
+            System.err.println(ex);
+        }
+        return idFact;
     }
     
 }
