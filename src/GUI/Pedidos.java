@@ -502,9 +502,13 @@ public class Pedidos extends javax.swing.JPanel {
             if(tbl_Productos.getSelectedRow() != -1){
                 
                 while(check_data == false){
-                    check_data = true;
+                    //check_data = true;
                     String aux = JOptionPane.showInputDialog("Ingresa la cantidad de este producto");
-                    try{
+                    if((aux == "") || (aux == null)){
+                        check_data = true;
+                        break;
+                    } else {
+                        try{
                         rowSelected = tbl_Productos.rowAtPoint(evt.getPoint());
                         
                         id = (Integer) tbl_Productos.getValueAt(rowSelected, 0);
@@ -513,35 +517,36 @@ public class Pedidos extends javax.swing.JPanel {
                         
                         cantidad = Integer.parseInt(aux);
                         total = cantidad * vlr_U;
-                        
-                    } catch(Exception e){
-                        JOptionPane.showMessageDialog(null, "El valor de cantidad debe ser numerico", "Error en datos", JOptionPane.ERROR_MESSAGE);
-                        check_data = false;
-                        continue;
+                        //
+                        dfmTablePedido = (DefaultTableModel) tbl_Pedido.getModel(); 
+                
+                        Object [] fila = new Object [5];
+                            fila[0] = id;
+                            fila[1] = nom_prod;
+                            fila[2] = vlr_U;
+                            fila[3] = cantidad;
+                            fila[4] = total;
+
+                        dfmTablePedido.addRow(fila);
+
+                        lbl_CantItems.setText(""+tbl_Pedido.getRowCount());
+                        totalPedido = totalPedido + ((Integer)dfmTablePedido.getValueAt(tbl_Pedido.getRowCount()-1, 4));
+                        lbl_TotalPedido.setText(""+totalPedido);
+
+                        lbl_TotalPedido.setText(df.format(Integer.valueOf(lbl_TotalPedido.getText().replace(".", "").replace(",", "")))); 
+                       // 
+                        check_data = true;
+                        } catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "El valor de cantidad debe ser numerico", "Error en datos", JOptionPane.ERROR_MESSAGE);
+                            check_data = false;
+                            continue;
+                        }
+                        if(cantidad <= 0){
+                            JOptionPane.showMessageDialog(null, "El valor de cantidad debe MAYOR a 0 (cero)", "Error en datos", JOptionPane.ERROR_MESSAGE);
+                            check_data = false;
+                        }
                     }
-                    if(cantidad <= 0){
-                        JOptionPane.showMessageDialog(null, "El valor de cantidad debe MAYOR a 0 (cero)", "Error en datos", JOptionPane.ERROR_MESSAGE);
-                        check_data = false;
-                    }
-                }
-                
-                dfmTablePedido = (DefaultTableModel) tbl_Pedido.getModel(); 
-                
-                Object [] fila = new Object [5];
-                    fila[0] = id;
-                    fila[1] = nom_prod;
-                    fila[2] = vlr_U;
-                    fila[3] = cantidad;
-                    fila[4] = total;
-                
-                dfmTablePedido.addRow(fila);
-                
-                lbl_CantItems.setText(""+tbl_Pedido.getRowCount());
-                totalPedido = totalPedido + ((Integer)dfmTablePedido.getValueAt(tbl_Pedido.getRowCount()-1, 4));
-                lbl_TotalPedido.setText(""+totalPedido);
-                
-                lbl_TotalPedido.setText(df.format(Integer.valueOf(lbl_TotalPedido.getText().replace(".", "").replace(",", ""))));
-                
+                }   
         } else {
             System.out.println("Error selecciona fila");
         }

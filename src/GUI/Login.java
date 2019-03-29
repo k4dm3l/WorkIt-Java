@@ -271,6 +271,7 @@ public class Login extends javax.swing.JFrame {
                             this.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Valide su usuario y clave o comuniquese con el administrador del sistema", "Credenciales Erradas", JOptionPane.ERROR_MESSAGE);
+                            txt_User.requestFocus();
                             txt_Password.setText("");
                             txt_User.setText("");
                         }
