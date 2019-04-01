@@ -1,5 +1,7 @@
 package Logic;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -44,6 +46,16 @@ public class Utilidades {
         } catch (Exception e){
             System.out.println("Error Metodo");
         }
+    }
+    
+    public String getSysDate(){
+        String fecha;
+        
+        Date objD = new Date( );
+        SimpleDateFormat smp = new SimpleDateFormat("dd/MM/yyyy");
+        fecha = smp.format(objD);
+        
+        return fecha;
     }
     
 }

@@ -1,6 +1,7 @@
 package GUI;
 
 import Logic.CajaLogic;
+import Logic.TicketsPrint;
 import Logic.Utilidades;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
@@ -18,6 +19,7 @@ public class Caja extends javax.swing.JPanel {
     
     CajaLogic cl;
     Utilidades ul;
+    TicketsPrint tp;
     
     DefaultTableModel dfmTableAperCaja;
     DefaultTableModel dfmTablePedAbiertos;
@@ -43,6 +45,7 @@ public class Caja extends javax.swing.JPanel {
         df = new DecimalFormat("#,###");
         
         cl = CajaLogic.getInstance();
+        tp = TicketsPrint.getInstance();
         
         ListAperCaja = new LinkedList<CajaLogic>();
         ListPedAbiertos = new LinkedList<CajaLogic>();
@@ -562,7 +565,9 @@ public class Caja extends javax.swing.JPanel {
                     lbl_TotalVentas.setText(df.format(Integer.valueOf(lbl_TotalVentas.getText().replace(".", "").replace(".", ""))));
                     
                     txt_saldoApertura.setText("");
-                    System.out.println("PENDIENTE IMPRIMIR RECIBO DE APERTURA");
+                    System.out.println("IMPRESION RECIBO DE APERTURA");
+                    tp.printOpenBoxTicket(tbl_EstadosCaja);
+                    
                 }
             }
         }
@@ -704,6 +709,16 @@ public class Caja extends javax.swing.JPanel {
                     ul.cleanRegTable(tbl_EstadosCaja, idCierre);
                     ul.cleanTable(tbl_PedidosAbiertos);
                     ul.cleanTable(tbl_Ventas);
+                    
+                    System.out.println("IMPRESION RECIBO DE CIERRE");
+                    tp.printCloseBoxTicket(lbl_IdApertura.getText(), 
+                                                            lbl_FecApertura.getText(), 
+                                                            lbl_SaldoApertura.getText(), 
+                                                            lbl_PedidosAbiertos.getText(), 
+                                                            lbl_VentasRealizadas.getText(), 
+                                                            lbl_TotalVentas.getText(), 
+                                                            String.valueOf(saldoCierre), 
+                                                            ul.getSysDate());
 
                     System.out.println("Voy a cerrar la cajaX: "+cl.getId_Ape());
                     System.out.println("Total Ventas (BD): "+cl.getTotalSales(cl.getId_Ape()));
@@ -722,7 +737,6 @@ public class Caja extends javax.swing.JPanel {
 
                     JOptionPane.showMessageDialog(null, "Cierre de caja realizado exitosamente", "Exito cierre caja", JOptionPane.INFORMATION_MESSAGE);
                      txt_IdApertura.setText("");
-                    System.out.println("PENDIENTE IMPRIMIR RECIBO DE CIERRE");
 
                 } else {
                     System.out.println("Id Apertura: "+cl.getId_Ape());

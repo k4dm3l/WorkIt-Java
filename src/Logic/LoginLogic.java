@@ -17,7 +17,7 @@ public class LoginLogic {
     private static LoginLogic loginlogic;
     
     private static int user_ID;
-    private static String user;
+    private static String userN;
     private static String pass;
     
 //Singleton
@@ -44,6 +44,7 @@ public class LoginLogic {
                     result = 1 + result;
                     JOptionPane.showMessageDialog(null, "Bienvenido "+rs.getString(1), "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
                     user_ID = rs.getInt(2);
+                    userN = rs.getString(1);
                 }  else {
                     //conDB.close();
                 }
@@ -54,11 +55,11 @@ public class LoginLogic {
     }
     
     public void setUser(String user){
-        LoginLogic.user = user;
+        LoginLogic.userN = user;
     }
     
     public String getUser(){
-        return user;
+        return userN;
     }
     
    public void setPass(String pass){

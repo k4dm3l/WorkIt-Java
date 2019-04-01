@@ -1,5 +1,6 @@
 package GUI;
 
+import Logic.TicketsPrint;
 import Logic.CajaLogic;
 import Logic.ClientesLogic;
 import Logic.LoginLogic;
@@ -33,6 +34,7 @@ public class Pedidos extends javax.swing.JPanel {
     Utilidades ul;
     PedidosLogic p;
     LoginLogic log;
+    TicketsPrint tp;
     
     int idCliente;
     int totalPedido = 0;
@@ -49,6 +51,8 @@ public class Pedidos extends javax.swing.JPanel {
         lbl_nomCliente.setText("SIN DATOS");
         
         clg = CajaLogic.getInstance();
+        tp = TicketsPrint.getInstance();
+        
         clg.setId_Ape(0);
         
         df = new DecimalFormat("#,###");
@@ -406,26 +410,13 @@ public class Pedidos extends javax.swing.JPanel {
                      precioUnitario = (Integer) tbl_Pedido.getValueAt(i, 2);
                      cantprod = (Integer) tbl_Pedido.getValueAt(i, 3);
                      totalProd = (Integer) tbl_Pedido.getValueAt(i, 4);
-                     /*       
-                     System.out.print("\nINSERT \n"
-                        + "Pedido: "+idFact+"\n"
-                        + "Id Factura: "+idFact+"\n"
-                        + "Id Producto: "+idprod+"\n"
-                        + "Doc User:"+log.getUserID()+" \n"//Requiere DOC USUARIO
-                        + "Doc Client:"+cl.getId_Cliente()+" \n"
-                        + "Id AperCaja: "+clg.getId_Ape()+"\n"
-                        + "Precio Unitario Producto: "+precioUnitario+"\n"
-                        + "Cantidad Producto: "+cantprod+"\n"
-                        + "Total Producto: "+totalProd+"\n"
-                      );
-                     */
+                    
                      p.createOrder(idFact, idFact, idprod, log.getUserID(), cl.getId_Cliente(), clg.getId_Ape(), precioUnitario, cantprod, totalProd);
                      
                     }
-                    //Aqui codigo para imprimir RECIBO DE PEDIDO
-                    System.out.println("PENDIENTE IMPRIMIR RECIBO DE PEDIDO");
-                    
                     ul = Utilidades.getInstance();
+                    System.out.println("IMPRESION RECIBO DE PEDIDO");
+                    tp.printOrderTicket(tbl_Pedido, String.valueOf(idFact), ul.getSysDate(), log.getUser(), lbl_nomCliente.getText(), lbl_CantItems.getText(), lbl_TotalPedido.getText());
                     
                     idCliente = 0;
                     totalPedido = 0;

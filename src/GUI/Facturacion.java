@@ -2,6 +2,8 @@ package GUI;
 
 import Logic.CajaLogic;
 import Logic.FacturacionLogic;
+import Logic.LoginLogic;
+import Logic.TicketsPrint;
 import Logic.Utilidades;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
@@ -19,6 +21,8 @@ public class Facturacion extends javax.swing.JPanel {
     CajaLogic cl;
     FacturacionLogic fl;
     Utilidades ul;
+    TicketsPrint tp;
+    LoginLogic log;
     
     LinkedList<FacturacionLogic> ListFact;
     
@@ -43,6 +47,8 @@ public class Facturacion extends javax.swing.JPanel {
         cl = CajaLogic.getInstance();
         fl = FacturacionLogic.getInstance();
         ul = Utilidades.getInstance();
+        tp = TicketsPrint.getInstance();
+        log = LoginLogic.getInstance();
         
         ListFact = new LinkedList<FacturacionLogic>();
         
@@ -488,6 +494,18 @@ public class Facturacion extends javax.swing.JPanel {
                 fl.payBill(Integer.parseInt(lbl_IdPedido.getText()));
                 
                 System.out.println("PENDIENTE IMPRIMIR FACTURA DE VENTA");
+                
+                tp.printBillTicket(tbl_ItemsPedido, 
+                                               lbl_IdPedido.getText(), 
+                                               ul.getSysDate(), 
+                                               log.getUser(), 
+                                               lbl_IdCliente.getText(), 
+                                               lbl_NombreCliente.getText(), 
+                                               lbl_CantItems.getText(), 
+                                               lbl_TotalVenta.getText(), 
+                                               txt_DineroRecibido.getText(), 
+                                               lbl_Cambio.getText());
+                
                 JOptionPane.showMessageDialog(null, "Pago Realizado EXITOSAMENTE \n Total: $"+total+"\n Recibido: $"+dineroRecibido+"\n Devuelta: $"+(dineroRecibido-total), "Exito Facturacion", JOptionPane.INFORMATION_MESSAGE);
                     
                     //LIMPIEZA DE TODOS LOS CAMPOS
