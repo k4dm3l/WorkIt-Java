@@ -58,26 +58,26 @@ public class TicketsPrint {
             String fa = printer.alinharADireita(10, fecApertura);
             printer.printTextWrap(8, 1, 5, 80, "Fecha Apertura Caja: ");
             printer.printTextWrap(8, 1, 35, 80, fa);
-            
-            String sa = printer.alinharADireita(10, saldoApertura);
-            printer.printTextWrap(9, 1, 5, 80, "Saldo Apertura Caja: ");
-            printer.printTextWrap(9, 1, 35, 80, "$ "+sa);
-            
+                        
             String pa = printer.alinharADireita(10, pedAbiertos);
-            printer.printTextWrap(10, 1, 5, 80, "Pedidos Abiertos: ");
-            printer.printTextWrap(10, 1, 35, 80, pa);
+            printer.printTextWrap(9, 1, 5, 80, "Pedidos Abiertos: ");
+            printer.printTextWrap(9, 1, 35, 80, pa);
             
             String vr = printer.alinharADireita(10, ventasRealizadas);
-            printer.printTextWrap(11, 1, 5, 80, "Ventas Realizadas: ");
-            printer.printTextWrap(11, 1, 35, 80, vr);
-            
-            String tv = printer.alinharADireita(10, totalVentas);
-            printer.printTextWrap(12, 1, 5, 80, "Total Ventas: ");
-            printer.printTextWrap(12, 1, 35, 80, "$ "+tv);
+            printer.printTextWrap(10, 1, 5, 80, "Ventas Realizadas: ");
+            printer.printTextWrap(10, 1, 35, 80, vr);
             
             String cc = printer.alinharADireita(10, idApertura);
-            printer.printTextWrap(13, 1, 5, 80, "Id Cierre Caja: ");
-            printer.printTextWrap(13, 1, 35, 80, cc);
+            printer.printTextWrap(11, 1, 5, 80, "Id Cierre Caja: ");
+            printer.printTextWrap(11, 1, 35, 80, cc);
+            
+            String sa = printer.alinharADireita(10, saldoApertura);
+            printer.printTextWrap(12, 1, 5, 80, "Saldo Apertura Caja: ");
+            printer.printTextWrap(12, 1, 35, 80, "$ "+sa);
+            
+            String tv = printer.alinharADireita(10, totalVentas);
+            printer.printTextWrap(13, 1, 5, 80, "Total Ventas: ");
+            printer.printTextWrap(13, 1, 35, 80, "$ "+tv);
             
             String tc = printer.alinharADireita(10, totalCierre);
             printer.printTextWrap(14, 1, 5, 80, "Total Cierre: ");
@@ -94,11 +94,11 @@ public class TicketsPrint {
             printer.printTextWrap(20, 1, 23, 80, "Contacto: ignitedevsoft@gmail.com");
             printer.printTextWrap(21, 1, 5,80, "===================================================================");
             
-            printer.toFile("src/CierresCaja/AperturaCaja_"+idApertura+".txt");
+            printer.toFile("src/CierresCaja/CierreCaja_"+idApertura+".txt");
             FileInputStream inputStream = null;
             
             try{
-                inputStream = new FileInputStream("src/CierresCaja/AperturaCaja_"+idApertura+".txt");
+                inputStream = new FileInputStream("src/CierresCaja/CierreCaja_"+idApertura+".txt");
             } catch(FileNotFoundException fe){
                 fe.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Error: "+fe.getMessage(), "Error Almacenamiento Archivo", JOptionPane.ERROR_MESSAGE);
