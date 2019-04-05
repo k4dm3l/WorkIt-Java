@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -140,11 +141,11 @@ public class PedidosLogic {
     }
     
     //Creacion registro de Pedido x Producto
-    public void createOrder(int idP, int idF, int idProd, int idUs, int idC, int idAp, int pp, int cp, int vlrp) {
+    public void createOrder(int idP, int idF, int idProd, int idUs, int idC, int idAp, int idM, int pp, int cp, int vlrp, String descP) {
         String SSQL = "INSERT INTO pedidos "
-                + "(id_pedido, FK_id_fact_v, FK_id_producto, FK_id_doc_usuario, FK_id_doc_cliente, FK_aper_caja, precio_producto_und, cantidad_producto, vlr_total_producto)"
+                + "(id_pedido, FK_id_fact_v, FK_id_producto, FK_id_doc_usuario, FK_id_doc_cliente, FK_aper_caja, FK_id_mesa, precio_producto_und, cantidad_producto, vlr_total_producto, observacion_pedido)"
                 + " VALUES"
-                + " ("+idP+", "+ idF+", "+ idProd+", "+ idUs+", "+ idC+", "+ idAp+", "+ pp+", "+ cp+", "+ vlrp+")";
+                + " ("+idP+", "+ idF+", "+ idProd+", "+ idUs+", "+ idC+", "+ idAp+", "+idM+", "+ pp+", "+ cp+", "+ vlrp+", '"+descP+"')";
         
         try {
             Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
@@ -179,6 +180,28 @@ public class PedidosLogic {
             System.err.println(ex);
         }
         return idFact;
+    }
+    
+    public void loadComboBoxMesas(JComboBox jc){
+        String SSQL = "SELECT nombre_mesa FROM mesas";
+        
+        try{
+            Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
+            
+            Statement st = (Statement) conDB.createStatement();
+            ResultSet rs = st.executeQuery(SSQL);
+            
+            jc.addItem("Seleccione Mesa");
+            
+            while(rs.next()){
+                jc.addItem(rs.getString(1));
+            }
+            
+        } catch (SQLException ex){
+            System.err.println(ex);
+        } catch (ClassNotFoundException ex) {
+            System.err.println(ex);
+        }
     }
     
 }

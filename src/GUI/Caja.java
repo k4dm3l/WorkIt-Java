@@ -76,6 +76,7 @@ public class Caja extends javax.swing.JPanel {
             Object [ ] row = {
                 ListPedAbiertos.get(j).getId_Ped(),
                 ListPedAbiertos.get(j).getCantItems(),
+                ListPedAbiertos.get(j).getMesa(),
                 ListPedAbiertos.get(j).getVlrTotal()
             };
             dfmTablePedAbiertos.addRow(row);
@@ -157,14 +158,14 @@ public class Caja extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Id. Pedido", "Cant. Items", "Total Pedido"
+                "Id. Pedido", "Cant. Items", "Mesa", "Total Pedido"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -183,7 +184,8 @@ public class Caja extends javax.swing.JPanel {
             tbl_PedidosAbiertos.getColumnModel().getColumn(1).setResizable(false);
             tbl_PedidosAbiertos.getColumnModel().getColumn(1).setPreferredWidth(80);
             tbl_PedidosAbiertos.getColumnModel().getColumn(2).setResizable(false);
-            tbl_PedidosAbiertos.getColumnModel().getColumn(2).setPreferredWidth(120);
+            tbl_PedidosAbiertos.getColumnModel().getColumn(3).setResizable(false);
+            tbl_PedidosAbiertos.getColumnModel().getColumn(3).setPreferredWidth(120);
         }
 
         tbl_Ventas.setModel(new javax.swing.table.DefaultTableModel(
@@ -541,6 +543,7 @@ public class Caja extends javax.swing.JPanel {
                         Object [ ] row = {
                             ListPedAbiertos.get(j).getId_Ped(),
                             ListPedAbiertos.get(j).getCantItems(),
+                            ListPedAbiertos.get(j).getMesa(),
                             ListPedAbiertos.get(j).getVlrTotal()
                         };
                         dfmTablePedAbiertos.addRow(row);
@@ -624,6 +627,7 @@ public class Caja extends javax.swing.JPanel {
                     Object [ ] row = {
                         ListPedAbiertos.get(j).getId_Ped(),
                         ListPedAbiertos.get(j).getCantItems(),
+                        ListPedAbiertos.get(j).getMesa(),
                         ListPedAbiertos.get(j).getVlrTotal()
                     };
                     dfmTablePedAbiertos.addRow(row);

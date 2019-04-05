@@ -11,10 +11,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Utilidades {
     
+    private static String VERSION_APP = "1.3.12";
     private static Utilidades utilidades;
     
     private Utilidades(){
         
+    }
+    
+    public String getVersionApp(){
+        return this.VERSION_APP;
     }
     
     public static Utilidades getInstance(){

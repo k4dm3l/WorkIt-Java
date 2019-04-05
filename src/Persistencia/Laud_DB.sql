@@ -66,6 +66,14 @@ INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat
 INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('AREPA CON COSTILLA BBQ', 'POLLO, CARNE, CHICHARRON, COSTILLA, MADURO, RIPIO, QUESO Y SALSAS', '8000', '1');
 INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('AREPA PAISA', 'CHICHARRON, MADURO, QUESO, CHORIZO, RIPIO Y SALSAS', '7000', '1');
 INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('AREPA CARNIVOROS', 'POLLO, CARNE, COSTILLA CHICHARRON, MADURO, CHORIZO, QUESO, RIPIO Y SALSAS', '9500', '1');
+INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('AREPA CON DOBLE QUESO', 'SIN DESCRIPCION INGREDIENTES', '2500', '1');
+INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('AREPA POLLO Y QUESO', 'SIN DESCRIPCION', '5000', '1');
+INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('AREPA MIXTA', 'POLLO, CARNE, QUESO, RIPIO Y SALSAS', '5500', '1');
+INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('AREPA VEGETARIANA', 'MAIZ TIERNO, RIPIO, TOMATE, SALSAS, QUESO, AGUACATE Y MADURO', '5000', '1');
+INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('AREPA FEROZ', 'POLLO, CARNE, CHICHARRON, CHORIZO, MADURO, COSTILLA, TOCINETA, AGUACATE, RIPIO, QUESO, SALSAS, MAIZ TIERNO, HUEVO DE CODORNIZ', '11000', '1');
+INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('AREPA BESTIA', 'POLLO, CARNE, CHICHARRON, CHORIZO, MADURO, COSTILLA, TOCINETA, AGUACATE, SALCHICHA AHUMADA, RIPIO, MAIZ TIERNO, QUESO, SALSAS, HUEVO CODORNIZ', '12000', '1');
+INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('AREPA CARNIBURGUER', 'POLLO, CARNE, CHICHARRON, CHORIZO, MADURO, COSTILLA, TOCINETA, AGUACATE, SALCHICHA AHUMADA, CARNE DE HAMBURGUESA, MAIZ TIERNO, QUESO, SALSAS, HUEVO DE CODORNIZ, RIPIO', '14500', '1');
+INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('AREPICADA', 'AREPA BBQ + PICADA PERSONAL CON QUESO', '20000', '1');
 
 INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('CHULETA DE POLLO', 'CHULETA DE POLLO CON ENSALADA, PAPAS FRITAS, AREPA FRITA', '14000', '2');
 INSERT INTO productos(nom_producto,desc_producto, precio_producto_und, FK_id_cat_prod) VALUES('CHULETA DE POLLO + QUESO', 'CHULETA DE POLLO CON ENSALADA, PAPAS FRITAS, AREPA FRITA Y QUESO', '15000', '2');
@@ -138,6 +146,22 @@ CREATE TABLE factura_ventas(
   fec_crea_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = INNODB;
 
+CREATE TABLE mesas(
+    id_mesa INT(9) UNSIGNED ZEROFILL PRIMARY KEY AUTO_INCREMENT,
+    nombre_mesa VARCHAR(15) NOT NULL,
+    abr_mesa VARCHAR(5)
+) ENGINE = INNODB;
+
+INSERT INTO mesas(nombre_mesa, abr_mesa) VALUES('MESA_1', 'M1');
+INSERT INTO mesas(nombre_mesa, abr_mesa) VALUES('MESA_2', 'M2');
+INSERT INTO mesas(nombre_mesa, abr_mesa) VALUES('MESA_3', 'M3');
+INSERT INTO mesas(nombre_mesa, abr_mesa) VALUES('MESA_4', 'M4');
+INSERT INTO mesas(nombre_mesa, abr_mesa) VALUES('MESA_5', 'M5');
+INSERT INTO mesas(nombre_mesa, abr_mesa) VALUES('MESA_VERDE_1', 'MV1');
+INSERT INTO mesas(nombre_mesa, abr_mesa) VALUES('MESA_VERDE_2', 'MV2');
+INSERT INTO mesas(nombre_mesa, abr_mesa) VALUES('BARRA', 'BR');
+INSERT INTO mesas(nombre_mesa, abr_mesa) VALUES('DOMICILIO', 'DOM');
+
 CREATE TABLE pedidos (
   id_registro INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   id_pedido INT NOT NULL,
@@ -147,11 +171,13 @@ CREATE TABLE pedidos (
   FK_id_doc_usuario INT NOT NULL,
   FK_id_doc_cliente INT NOT NULL,
   FK_aper_caja INT(10) UNSIGNED ZEROFILL NOT NULL,
+  FK_id_mesa INT(9) UNSIGNED ZEROFILL NOT NULL,
 
   precio_producto_und DECIMAL(9,2),
   cantidad_producto INT NOT NULL,
   vlr_total_producto DECIMAL(9,2),
   fec_crea_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  observacion_pedido VARCHAR(50),
 
   FOREIGN KEY (FK_id_fact_v) REFERENCES factura_ventas(id_fact_v),
   FOREIGN KEY (FK_id_producto) REFERENCES productos (id_producto),

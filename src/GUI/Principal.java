@@ -55,7 +55,7 @@ public class Principal extends javax.swing.JFrame {
         //INICIALIZACIONES
             p = new Pedidos();
             f = new Facturacion( );
-            c = new Caja( );
+            c = new Caja();
             
             //Singleton
             cl = CajaLogic.getInstance();
@@ -543,6 +543,7 @@ public class Principal extends javax.swing.JFrame {
             Object [ ] row = {
                 c.ListPedAbiertos.get(j).getId_Ped(),
                 c.ListPedAbiertos.get(j).getCantItems(),
+                c.ListPedAbiertos.get(j).getMesa(),
                 c.ListPedAbiertos.get(j).getVlrTotal()
             };
             c.dfmTablePedAbiertos.addRow(row);

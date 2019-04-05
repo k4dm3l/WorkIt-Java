@@ -25,6 +25,7 @@ public class CajaLogic {
     int idPed;
     int cantItemPed;
     int vlrTotalPed;
+    String mesa;
     
     int idFacVen;
     int vlrTotalFacVen;
@@ -46,9 +47,10 @@ public class CajaLogic {
     }
     
     //Constructor 3
-    private CajaLogic(int idPed, int cantItems, int vlrTotal){
+    private CajaLogic(int idPed, int cantItems, String mesa, int vlrTotal){
         this.idPed = idPed;
         this.cantItemPed = cantItems;
+        this.mesa = mesa;
         this.vlrTotalPed = vlrTotal;
     }
     
@@ -95,6 +97,10 @@ public class CajaLogic {
     
     public String getFecha_Ape(){
         return fecha_Ape;
+    }
+    
+    public String getMesa(){
+        return mesa;
     }
     
     public void setId_Ape(int idCaja){
@@ -161,9 +167,10 @@ public class CajaLogic {
     
     public LinkedList<CajaLogic>getOpenOrders(int id_Ape){
         LinkedList<CajaLogic>listadoPedAbiertos = new LinkedList<>();
-        String SSQL = "SELECT DISTINCT fv.id_fact_v, fv.cantidad_items, fv.vlr_total_fv"
-                + " FROM factura_ventas fv, aper_caja ap, pedidos p"
+        String SSQL = "SELECT DISTINCT fv.id_fact_v, fv.cantidad_items, m.abr_mesa, fv.vlr_total_fv"
+                + " FROM factura_ventas fv, aper_caja ap, pedidos p, mesas m"
                 + " WHERE"
+                + " m.id_mesa = p.FK_id_mesa and"
                 + " ap.id_caja = p.FK_aper_caja and"
                 + " fv.id_fact_v = p.FK_id_fact_v and"
                 + " fv.estado_fv = false and"
@@ -178,9 +185,10 @@ public class CajaLogic {
             while(rs.next()){
                 idPed = rs.getInt(1);
                 cantItemPed = rs.getInt(2);
-                vlrTotalPed = rs.getInt(3);
+                mesa = rs.getString(3);
+                vlrTotalPed = rs.getInt(4);
                 
-                CajaLogic cl = new CajaLogic(idPed, cantItemPed, vlrTotalPed);
+                CajaLogic cl = new CajaLogic(idPed, cantItemPed, mesa, vlrTotalPed);
                 listadoPedAbiertos.add(cl);
             }
             
