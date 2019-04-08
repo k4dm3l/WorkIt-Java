@@ -8,6 +8,7 @@ package GUI;
 import Logic.CajaLogic;
 import Logic.LoginLogic;
 import Logic.PrincipalLogic;
+import Logic.Utilidades;
 import Persistencia.ConnectionMySQL;
 import com.sun.awt.AWTUtilities;
 import java.awt.Color;
@@ -38,6 +39,7 @@ public class Principal extends javax.swing.JFrame {
     Pedidos p;
     Facturacion f;
     Caja c;
+    Utilidades u;
     
     ConnectionMySQL cmSQL;
     PrincipalLogic pl;
@@ -58,23 +60,38 @@ public class Principal extends javax.swing.JFrame {
             c = new Caja();
             
             //Singleton
-            cl = CajaLogic.getInstance();
             cmSQL = ConnectionMySQL.getInstance();
+            cl = CajaLogic.getInstance();
             pl = PrincipalLogic.getInstance();
             lg = LoginLogic.getInstance();
+            u = Utilidades.getInstance();
             
+            lbl_Version.setText("version "+u.getVersionApp());
             cl.setId_Ape(0);
             
         //SETS
         panelCarga.setViewportView(p);
         try {
-            lbl_Usuario.setText(lbl_Usuario.getText() + ""+pl.getUserName(lg.getUser(), lg.getPass(), cmSQL.getDBConnection()));
+            String nombre =  pl.getUserName(lg.getUser(), lg.getPass(), cmSQL.getDBConnection());
+            lbl_Usuario.setText(lbl_Usuario.getText()+" "+nombre);
+            
+            if(pl.getRolUser(lg.getUser(), lg.getPass(), cmSQL.getDBConnection()).equals("ADMIN")){
+                btn_opcClientes.setVisible(true);
+                btn_opcUsuarios.setVisible(true);
+                btn_opcProductos.setVisible(true);
+            } else {
+                if(pl.getRolUser(lg.getUser(), lg.getPass(), cmSQL.getDBConnection()).equals("OPERADOR")){
+                    btn_opcClientes.setVisible(false);
+                    btn_opcUsuarios.setVisible(false);
+                    btn_opcProductos.setVisible(false);
+                }
+            }
+            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         Shape form = new RoundRectangle2D.Double(0, 0, this.getBounds().width, this.getBounds().height, 10, 10);
         AWTUtilities.setWindowShape(this, form);
     }
@@ -109,6 +126,7 @@ public class Principal extends javax.swing.JFrame {
         btn_opcSalir = new javax.swing.JPanel();
         lbl_IconClientes1 = new javax.swing.JLabel();
         lbl_Clientes1 = new javax.swing.JLabel();
+        lbl_Version = new javax.swing.JLabel();
         lbl_Usuario = new javax.swing.JLabel();
         panelCarga = new javax.swing.JScrollPane();
 
@@ -226,7 +244,7 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        panel_SidePanel.add(btn_opcUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 260, -1));
+        panel_SidePanel.add(btn_opcUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 260, -1));
 
         btn_opcFacturar.setBackground(new java.awt.Color(211, 47, 47));
         btn_opcFacturar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -343,7 +361,7 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        panel_SidePanel.add(btn_opcClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 260, -1));
+        panel_SidePanel.add(btn_opcClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 260, -1));
 
         btn_opcCaja.setBackground(new java.awt.Color(211, 47, 47));
         btn_opcCaja.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -424,6 +442,11 @@ public class Principal extends javax.swing.JFrame {
         );
 
         panel_SidePanel.add(btn_opcSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 670, 260, -1));
+
+        lbl_Version.setFont(new java.awt.Font("Segoe UI Light", 1, 14)); // NOI18N
+        lbl_Version.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_Version.setText("v. ");
+        panel_SidePanel.add(lbl_Version, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 630, -1, -1));
 
         lbl_Usuario.setFont(new java.awt.Font("Segoe UI Light", 1, 14)); // NOI18N
         lbl_Usuario.setForeground(new java.awt.Color(255, 255, 255));
@@ -690,6 +713,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_Productos;
     private javax.swing.JLabel lbl_Usuario;
     private javax.swing.JLabel lbl_Usuarios;
+    private javax.swing.JLabel lbl_Version;
     private javax.swing.JScrollPane panelCarga;
     private javax.swing.JPanel panel_SidePanel;
     // End of variables declaration//GEN-END:variables

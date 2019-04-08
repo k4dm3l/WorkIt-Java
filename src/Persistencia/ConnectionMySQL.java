@@ -3,6 +3,7 @@ package Persistencia;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Camilo
@@ -38,9 +39,9 @@ public class ConnectionMySQL {
             try{
                 Class.forName(drive);
                 dbConnection = DriverManager.getConnection(url, username, password);
-                System.out.println("Connection DB: "+database);
+                System.out.println("ConnectionMySQL DB: "+database);
             } catch(SQLException ex){
-                System.out.println("NO CONNECTION  1");
+                JOptionPane.showMessageDialog(null, "Error de Conexion a la base de datos: Por favor verifique que el servidor de la base de datos, se este ejecutando. Comuniquese con soporte tecnico a ignitedevsoft@gmail.com", "Error Base de Datos", JOptionPane.ERROR_MESSAGE);
                 throw new SQLException(ex);
             } catch(ClassNotFoundException ex){
                 System.out.println("NO CONNECTION  2");

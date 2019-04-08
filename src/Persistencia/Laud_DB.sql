@@ -12,12 +12,14 @@ CREATE TABLE usuarios (
   nom_usuario VARCHAR(80) NOT NULL,
   ape_usuario VARCHAR(80) NOT NULL,
   nick_usuario VARCHAR(120) NOT NULL,
-  clave_usuario BLOB(120),
+  clave_usuario BLOB(120) NOT NULL,
+  rol_usuario VARCHAR(10) NOT NULL,  
   fec_crea_usuario TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = INNODB;
 
 /*INSERCION USUARIOS*/
-INSERT INTO usuarios(id_doc_usuario,nom_usuario, ape_usuario, nick_usuario, clave_usuario) VALUES(1111793381, 'CAMILO', 'ACEVEDO', 'ROOT', SHA('TOOR'));
+INSERT INTO usuarios(id_doc_usuario,nom_usuario, ape_usuario, nick_usuario, clave_usuario, rol_usuario) VALUES(1111793381, 'CAMILO', 'ACEVEDO', 'ROOT', SHA('TOOR'), 'ADMIN');
+INSERT INTO usuarios(id_doc_usuario,nom_usuario, ape_usuario, nick_usuario, clave_usuario, rol_usuario) VALUES(1, 'OPERADOR', 'ACEVEDO', 'TOOR', SHA('ROOT'), 'OPERADOR');
 
 CREATE TABLE clientes (
   id_doc_cliente INT NOT NULL PRIMARY KEY,

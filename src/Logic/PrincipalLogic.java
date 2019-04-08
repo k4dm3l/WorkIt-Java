@@ -28,7 +28,7 @@ public class PrincipalLogic {
     
     public String getUserName(String user, String password, Connection conDB) throws SQLException{
         String nom_usuario = "";
-        String SSQL = "SELECT nom_usuario FROM usuarios WHERE nick_usuario = '"+user+"' AND clave_usuario= '"+password+"'";
+        String SSQL = "SELECT nom_usuario FROM usuarios WHERE nick_usuario = '"+user+"' AND clave_usuario=sha1('"+password+"')";
         
         try{
                 Statement st =  (Statement) conDB.createStatement();
@@ -36,13 +36,29 @@ public class PrincipalLogic {
 
                 if(rs.next()){
                     nom_usuario = rs.getString(1);
-                }  else {
-                    //conDB.close();
                 }
+                
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex, "Error de Conexion", JOptionPane.ERROR_MESSAGE);
         } 
         return nom_usuario;
+    }
+    
+    public String getRolUser(String user, String password, Connection conDB) throws SQLException{
+        String rol_usuario = "";
+        String SSQL = "SELECT rol_usuario FROM usuarios WHERE nick_usuario = '"+user+"' AND clave_usuario=sha1('"+password+"')";
+        
+        try{
+                Statement st =  (Statement) conDB.createStatement();
+                ResultSet rs = st.executeQuery(SSQL);
+
+                if(rs.next()){
+                    rol_usuario = rs.getString(1);
+                } 
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex, "Error de Conexion", JOptionPane.ERROR_MESSAGE);
+        } 
+        return rol_usuario;
     }
     
 }
