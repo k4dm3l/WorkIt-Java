@@ -506,7 +506,7 @@ public class Facturacion extends javax.swing.JPanel {
                                                txt_DineroRecibido.getText(), 
                                                lbl_Cambio.getText());
                 
-                JOptionPane.showMessageDialog(null, "Pago Realizado EXITOSAMENTE \n Total: $"+total+"\n Recibido: $"+dineroRecibido+"\n Devuelta: $"+(dineroRecibido-total), "Exito Facturacion", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Pago Realizado EXITOSAMENTE \n         Total: $"+total+"\n         Recibido: $"+dineroRecibido+"\n         Devuelta: $"+(dineroRecibido-total), "Exito Facturacion", JOptionPane.INFORMATION_MESSAGE);
                     
                     //LIMPIEZA DE TODOS LOS CAMPOS
                 lbl_IdPedido.setText("SIN DATOS");

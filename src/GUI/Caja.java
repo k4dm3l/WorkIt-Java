@@ -569,7 +569,7 @@ public class Caja extends javax.swing.JPanel {
                     
                     txt_saldoApertura.setText("");
                     System.out.println("IMPRESION RECIBO DE APERTURA");
-                    tp.printOpenBoxTicket(tbl_EstadosCaja);
+                    tp.printOpenBoxTicket(lbl_IdApertura.getText(), lbl_SaldoApertura.getText(), lbl_FecApertura.getText());
                     
                 }
             }

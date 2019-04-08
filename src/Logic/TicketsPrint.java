@@ -47,7 +47,7 @@ public class TicketsPrint {
             printer.setOutSize(tamano, 80);
             
             printer.printTextWrap(0, 1, 5, 80, "===================================================================");
-            printer.printTextWrap(1, 1, 35, 80, "CARNIVOROS"); //Nombre establecimiento
+            printer.printTextWrap(1, 1, 29, 80, "RESTAURANTE CARNIVOROS"); //Nombre establecimiento
             printer.printTextWrap(3, 1, 31, 80, "Barrio Bellavista"); //Barrio
             printer.printTextWrap(4, 1, 37, 80, "Clle 47"); //Direccion
             printer.printTextWrap(5, 1, 38, 80, "12345"); //Numero de telefono
@@ -134,7 +134,7 @@ public class TicketsPrint {
         }
     }
     
-    public void printOpenBoxTicket(JTable tbl_AperCaja){
+    public void printOpenBoxTicket(String idAp, String saldoAp, String fecAp){
         try{
             PrinterMatrix printer = new PrinterMatrix();
             Extenso e = new Extenso();
@@ -146,28 +146,28 @@ public class TicketsPrint {
             printer.setOutSize(tamano, 80);
             
             printer.printTextWrap(0, 1, 5, 80, "===================================================================");
-            printer.printTextWrap(1, 1, 35, 80, "CARNIVOROS"); //Nombre establecimiento
+            printer.printTextWrap(1, 1, 29, 80, "RESTAURANTE CARNIVOROS"); //Nombre establecimiento
             printer.printTextWrap(3, 1, 31, 80, "Barrio Bellavista"); //Barrio
             printer.printTextWrap(4, 1, 37, 80, "Clle 47"); //Direccion
             printer.printTextWrap(5, 1, 38, 80, "12345"); //Numero de telefono
-            printer.printTextWrap(6, 1, 10, 30, "Id Apertura: "+tbl_AperCaja.getValueAt(0, 0).toString()); //Aqui va la fecha de recibo
-            printer.printTextWrap(6, 1, 33, 59, "Saldo Apertura: $"+tbl_AperCaja.getValueAt(0, 1).toString()); //Aqui va la hora de recibo
-            printer.printTextWrap(6, 1, 63, 80, "Fecha Apertura: "+tbl_AperCaja.getValueAt(0, 3).toString()); //Aqui va la hora de recibo
+            printer.printTextWrap(6, 1, 10, 80, "Id Apertura: "+idAp); //Aqui va la fecha de recibo
+            printer.printTextWrap(7, 1, 10, 80, "Saldo Apertura: $"+saldoAp); //Aqui va la hora de recibo
+            printer.printTextWrap(8, 1, 10, 80, "Fecha Apertura: "+fecAp); //Aqui va la hora de recibo
             
-            printer.printTextWrap(8, 1, 5, 80, "——————————–——————————–——————————–——————————–——–———–——–—–———–——–———");
-            printer.printTextWrap(9, 1, 21,80, "Preparar un producto fresco y delicioso");
-            printer.printTextWrap(10, 1, 31,80, "!TOMA SU TIEMPO!");
-            printer.printTextWrap(11, 1, 26,80, "!Gracias por su preferencia!");
-            printer.printTextWrap(12, 1, 30, 80, "WorkIt App - v. "+ul.getVersionApp());
-            printer.printTextWrap(13, 1, 31, 80, "Software a Medida");
-            printer.printTextWrap(14, 1, 23, 80, "Contacto: ignitedevsoft@gmail.com");
-            printer.printTextWrap(15, 1, 5,80, "===================================================================");
+            printer.printTextWrap(10, 1, 5, 80, "——————————–——————————–——————————–——————————–——–———–——–—–———–——–———");
+            printer.printTextWrap(11, 1, 21,80, "Preparar un producto fresco y delicioso");
+            printer.printTextWrap(12, 1, 31,80, "!TOMA SU TIEMPO!");
+            printer.printTextWrap(13, 1, 26,80, "!Gracias por su preferencia!");
+            printer.printTextWrap(14, 1, 30, 80, "WorkIt App - v. "+ul.getVersionApp());
+            printer.printTextWrap(15, 1, 31, 80, "Software a Medida");
+            printer.printTextWrap(16, 1, 23, 80, "Contacto: ignitedevsoft@gmail.com");
+            printer.printTextWrap(17, 1, 5,80, "===================================================================");
             
-            printer.toFile("src/AperturasCaja/AperturaCaja_"+tbl_AperCaja.getValueAt(0, 0).toString()+".txt");
+            printer.toFile("src/AperturasCaja/AperturaCaja_"+idAp+".txt");
             FileInputStream inputStream = null;
             
             try{
-                inputStream = new FileInputStream("src/AperturasCaja/AperturaCaja_"+tbl_AperCaja.getValueAt(0, 0).toString()+".txt");
+                inputStream = new FileInputStream("src/AperturasCaja/AperturaCaja_"+idAp+".txt");
             } catch(FileNotFoundException fe){
                 fe.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Error: "+fe.getMessage(), "Error Almacenamiento Archivo", JOptionPane.ERROR_MESSAGE);
@@ -213,7 +213,7 @@ public class TicketsPrint {
             printer.setOutSize(tamano, 80);
             
             printer.printTextWrap(0, 1, 5, 80, "===================================================================");
-            printer.printTextWrap(1, 1, 35, 80, "CARNIVOROS"); //Nombre establecimiento
+            printer.printTextWrap(1, 1, 29, 80, "RESTAURANTE CARNIVOROS"); //Nombre establecimiento
             printer.printTextWrap(3, 1, 31, 80, "Barrio Bellavista"); //Barrio
             printer.printTextWrap(4, 1, 37, 80, "Clle 47"); //Direccion
             printer.printTextWrap(5, 1, 38, 80, "12345"); //Numero de telefono
@@ -298,7 +298,7 @@ public class TicketsPrint {
         }
     }
     
-    public void printOrderTicket(JTable tbl_Pedido, String idPedido, String fechaPedido, String nomCajero, String nomCliente, String items, String totalPedido, String obs){
+    public void printOrderTicket(JTable tbl_Pedido, String idPedido, String fechaPedido, String nomCajero, String nomCliente, String items, String totalPedido, String obs, String mesa){
         try{
             PrinterMatrix printer = new PrinterMatrix();
             Extenso e = new Extenso();
@@ -311,7 +311,7 @@ public class TicketsPrint {
             printer.setOutSize(tamano, 80);
             
             printer.printTextWrap(0, 1, 5, 80, "===================================================================");
-            printer.printTextWrap(1, 1, 35, 80, "CARNIVOROS"); //Nombre establecimiento
+            printer.printTextWrap(1, 1, 29, 80, "RESTAURANTE CARNIVOROS"); //Nombre establecimiento
             printer.printTextWrap(3, 1, 31, 80, "Barrio Bellavista"); //Barrio
             printer.printTextWrap(4, 1, 37, 80, "Clle 47"); //Direccion
             printer.printTextWrap(5, 1, 38, 80, "12345"); //Numero de telefono
@@ -342,15 +342,17 @@ public class TicketsPrint {
             
             printer.printTextWrap(filas+18, 1, 5, 80, "Observaciones: ");
             printer.printTextWrap(filas+19, 1, 5, 80, obs);
+            printer.printTextWrap(filas+20, 1, 5, 12, "Mesa: ");
+            printer.printTextWrap(filas+20, 1, 16, 80, mesa);
             
-            printer.printTextWrap(filas+21, 1, 5, 80, "——————————–——————————–——————————–——————————–——–———–——–—–———–——–———");
-            printer.printTextWrap(filas+22, 1, 21,80, "Preparar un producto fresco y delicioso");
-            printer.printTextWrap(filas+23, 1, 31,80, "!TOMA SU TIEMPO!");
-            printer.printTextWrap(filas+24, 1, 26,80, "!Gracias por su preferencia!");
-            printer.printTextWrap(filas+25, 1, 30, 80, "WorkIt App - v1.2.9");
-            printer.printTextWrap(filas+26, 1, 31, 80, "Software a Medida");
-            printer.printTextWrap(filas+27, 1, 23, 80, "Contacto: ignitedevsoft@gmail.com");
-            printer.printTextWrap(filas+28, 1, 5,80, "===================================================================");
+            printer.printTextWrap(filas+22, 1, 5, 80, "——————————–——————————–——————————–——————————–——–———–——–—–———–——–———");
+            printer.printTextWrap(filas+23, 1, 21,80, "Preparar un producto fresco y delicioso");
+            printer.printTextWrap(filas+24, 1, 31,80, "!TOMA SU TIEMPO!");
+            printer.printTextWrap(filas+25, 1, 26,80, "!Gracias por su preferencia!");
+            printer.printTextWrap(filas+26, 1, 30, 80, "WorkIt App - v1.2.9");
+            printer.printTextWrap(filas+27, 1, 31, 80, "Software a Medida");
+            printer.printTextWrap(filas+28, 1, 23, 80, "Contacto: ignitedevsoft@gmail.com");
+            printer.printTextWrap(filas+29, 1, 5,80, "===================================================================");
             
             printer.toFile("src/Pedidos/Pedido_"+idPedido+".txt");
             FileInputStream inputStream = null;

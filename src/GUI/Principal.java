@@ -48,7 +48,6 @@ public class Principal extends javax.swing.JFrame {
     
     public Principal()  {
         initComponents();
-        setIconImage(new ImageIcon(getClass().getResource("../Multimedia/TurtleIcon.png")).getImage());
         
         btn_opcClientes.setVisible(false);
         btn_opcUsuarios.setVisible(false);
@@ -66,6 +65,8 @@ public class Principal extends javax.swing.JFrame {
             lg = LoginLogic.getInstance();
             u = Utilidades.getInstance();
             
+            setIconImage(new ImageIcon(getClass().getResource("../Multimedia/TurtleIcon.png")).getImage());
+            this.setTitle("Workit App - "+u.getVersionApp());
             lbl_Version.setText("version "+u.getVersionApp());
             cl.setId_Ape(0);
             
