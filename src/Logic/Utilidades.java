@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Utilidades {
     
-    private static String VERSION_APP = "1.4.15";
+    private static String VERSION_APP = "1.7.18";
     private static Utilidades utilidades;
     
     private Utilidades(){
@@ -29,6 +29,7 @@ public class Utilidades {
         return utilidades;
     }
     
+    //LIMPIAR REGISTRO DE TABLA
     public void cleanRegTable(JTable t, int indexT){
         DefaultTableModel dbt = (DefaultTableModel) t.getModel();
         for(int i = 0; i < dbt.getRowCount(); i++){
@@ -41,6 +42,7 @@ public class Utilidades {
         }
     }
     
+    //LIMPIAR TABLA
     public void cleanTable(JTable t){
         try{
             DefaultTableModel dbt = (DefaultTableModel) t.getModel();

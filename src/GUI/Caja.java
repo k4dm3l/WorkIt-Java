@@ -176,6 +176,7 @@ public class Caja extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tbl_PedidosAbiertos.setGridColor(new java.awt.Color(255, 255, 255));
         tbl_PedidosAbiertos.setSelectionBackground(new java.awt.Color(255, 102, 102));
         jScrollPane1.setViewportView(tbl_PedidosAbiertos);
         if (tbl_PedidosAbiertos.getColumnModel().getColumnCount() > 0) {
@@ -306,6 +307,7 @@ public class Caja extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tbl_EstadosCaja.setGridColor(new java.awt.Color(255, 255, 255));
         tbl_EstadosCaja.setSelectionBackground(new java.awt.Color(255, 102, 102));
         jScrollPane3.setViewportView(tbl_EstadosCaja);
         if (tbl_EstadosCaja.getColumnModel().getColumnCount() > 0) {

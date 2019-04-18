@@ -53,6 +53,7 @@ public class Pedidos extends javax.swing.JPanel {
         
         clg = CajaLogic.getInstance();
         tp = TicketsPrint.getInstance();
+        ul = Utilidades.getInstance();
         
         clg.setId_Ape(0);
         
@@ -259,6 +260,11 @@ public class Pedidos extends javax.swing.JPanel {
 
         btn_CancelarPedido.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btn_CancelarPedido.setText("Cancelar Pedido");
+        btn_CancelarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CancelarPedidoActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Total $:");
@@ -482,7 +488,6 @@ public class Pedidos extends javax.swing.JPanel {
                              p.createOrder(idFact, idFact, idprod, log.getUserID(), cl.getId_Cliente(), clg.getId_Ape(), idMesa, precioUnitario, cantprod, totalProd, desc);
 
                             }
-                            ul = Utilidades.getInstance();
                             System.out.println("IMPRESION RECIBO DE PEDIDO");
                             tp.printOrderTicket(tbl_Pedido, String.valueOf(idFact), ul.getSysDate(), log.getUser(), lbl_nomCliente.getText(), lbl_CantItems.getText(), lbl_TotalPedido.getText(), txt_Observaciones.getText(), lbl_mesa.getText());
 
@@ -508,12 +513,10 @@ public class Pedidos extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_crearPedidoActionPerformed
 
     private void txt_BuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_BuscarKeyReleased
-        // TODO add your handling code here:
         p.productFilter(txt_Buscar.getText(), tbl_Productos);
     }//GEN-LAST:event_txt_BuscarKeyReleased
 
     private void txt_BuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_BuscarKeyTyped
-        // TODO add your handling code here:
         char keyChar = evt.getKeyChar();
         if(Character.isLowerCase(keyChar)){
             evt.setKeyChar(Character.toUpperCase(keyChar));
@@ -521,7 +524,6 @@ public class Pedidos extends javax.swing.JPanel {
     }//GEN-LAST:event_txt_BuscarKeyTyped
 
     private void btn_BuscarProductoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_BuscarProductoMouseClicked
-        // TODO add your handling code here:
         p.productFilter(txt_Buscar.getText(), tbl_Productos);
         dfmTable = (DefaultTableModel) tbl_Productos.getModel();
     }//GEN-LAST:event_btn_BuscarProductoMouseClicked
@@ -698,6 +700,36 @@ public class Pedidos extends javax.swing.JPanel {
         // TODO add your handling code here:
         lbl_mesa.setText(cb_Mesas.getSelectedItem().toString());
     }//GEN-LAST:event_cb_MesasActionPerformed
+
+    private void btn_CancelarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelarPedidoActionPerformed
+        // TODO add your handling code here:
+        
+        int opc;
+        
+        opc = JOptionPane.showConfirmDialog(null, "Desea cancelar el pedido actual?", "Cancelar Pedido", JOptionPane.YES_NO_OPTION);
+        
+        if(opc == 0){
+            txt_Buscar.setText("");
+            txt_BuscarId.setText("");
+            txt_Observaciones.setText("");
+            
+            lbl_CantItems.setText("0");
+            lbl_TotalPedido.setText("0");
+            lbl_nomCliente.setText("SIN DATOS");
+            lbl_mesa.setText("SIN DATOS");
+            
+            ul.cleanTable(tbl_Pedido);
+            cb_Mesas.setSelectedIndex(0);
+            
+            JOptionPane.showMessageDialog(null, "Pedido cancelado correctamente", "Cancelar Pedido", JOptionPane.INFORMATION_MESSAGE);
+            
+        } else {
+            if(opc == 1){
+                System.out.println(opc);
+            }
+        }
+        
+    }//GEN-LAST:event_btn_CancelarPedidoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

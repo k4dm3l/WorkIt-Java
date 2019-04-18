@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import Logic.CajaLogic;
@@ -39,6 +34,8 @@ public class Principal extends javax.swing.JFrame {
     Pedidos p;
     Facturacion f;
     Caja c;
+    Usuarios us;
+    
     Utilidades u;
     
     ConnectionMySQL cmSQL;
@@ -57,6 +54,7 @@ public class Principal extends javax.swing.JFrame {
             p = new Pedidos();
             f = new Facturacion( );
             c = new Caja();
+            us= new Usuarios();
             
             //Singleton
             cmSQL = ConnectionMySQL.getInstance();
@@ -510,6 +508,8 @@ public class Principal extends javax.swing.JFrame {
         resetBackgroundColor(btn_opcProductos);
         resetBackgroundColor(btn_opcClientes);
         resetBackgroundColor(btn_opcCaja);
+        
+        panelCarga.setViewportView(us);
     }//GEN-LAST:event_btn_opcUsuariosMouseClicked
 
     private void btn_opcProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_opcProductosMouseClicked
