@@ -179,4 +179,33 @@ public class UsuariosLogic {
         }
     }
     
+    public void updateUser(int idU, String nomU, String apeU, String nickU, String rolU, boolean estU){
+        String SSQL = "UPDATE usuarios SET "
+                + " nom_usuario = ?"
+                + " ,ape_usuario = ?"
+                + " ,nick_usuario = ?"
+                + " ,rol_usuario = ?"
+                + " ,estado_usuario = ?"
+                + " WHERE"
+                + " id_doc_usuario = "+idU;
+        
+        try {
+            Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
+            PreparedStatement pst = conDB.prepareStatement(SSQL);
+            
+            pst.setString(1, nomU);
+            pst.setString(2, apeU);
+            pst.setString(3, nickU);
+            pst.setString(4, rolU);
+            pst.setBoolean(5, estU);
+            
+            pst.executeUpdate();
+            
+        } catch (SQLException ex){
+            
+        } catch(ClassNotFoundException ex){
+            Logger.getLogger(CajaLogic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }

@@ -200,6 +200,11 @@ public class Usuarios extends javax.swing.JPanel {
 
         btn_ActualizarUsuario.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btn_ActualizarUsuario.setText("Actualizar");
+        btn_ActualizarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ActualizarUsuarioActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setText("Conf. Clave:");
@@ -541,6 +546,117 @@ public class Usuarios extends javax.swing.JPanel {
         cb_RolUsuario.setEnabled(true);
         
     }//GEN-LAST:event_menuActualizarUsuarioActionPerformed
+
+    private void btn_ActualizarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ActualizarUsuarioActionPerformed
+        
+        if(txt_NombreUsuario.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "El campo de NOMBRE no puede estar vacio", "Actualizacion Usuario", JOptionPane.ERROR_MESSAGE);
+            txt_NombreUsuario.requestFocus();
+        } else {
+            if(txt_ApellidoUsuario.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "El campo de APELLIDOS no puede estar vacio", "Actualizacion Usuario", JOptionPane.ERROR_MESSAGE);
+                txt_ApellidoUsuario.requestFocus();
+            } else {
+                if(txt_Nick.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "El campo de NICK no puede estar vacio", "Actualizacion Usuario", JOptionPane.ERROR_MESSAGE);
+                    txt_Nick.requestFocus();
+                } else {
+                    if(cb_EstadoUsuario.getSelectedIndex() == 0){
+                        JOptionPane.showMessageDialog(null, "Se debe seleccionar un ESTADO para el usuario", "Actualizacion Usuario", JOptionPane.ERROR_MESSAGE);
+                        cb_EstadoUsuario.requestFocus();
+                    } else {
+                        if(cb_RolUsuario.getSelectedIndex() == 0){
+                            JOptionPane.showMessageDialog(null, "Se debe seleccionar un ROL para el usuario", "Actualizacion Usuario", JOptionPane.ERROR_MESSAGE);
+                            cb_RolUsuario.requestFocus();
+                        } else {
+                            
+                            if(cb_EstadoUsuario.getSelectedIndex() == 1){
+                                us.updateUser(Integer.parseInt(txt_IdUsuario.getText()), 
+                                    txt_NombreUsuario.getText(), 
+                                    txt_ApellidoUsuario.getText(), 
+                                    txt_Nick.getText(), 
+                                    cb_RolUsuario.getSelectedItem().toString(), 
+                                    true);
+                                System.out.println("AQUI: "+cb_EstadoUsuario.getSelectedIndex());
+                            } else {
+                                if(cb_EstadoUsuario.getSelectedIndex() == 2){
+                                    us.updateUser(Integer.parseInt(txt_IdUsuario.getText()), 
+                                        txt_NombreUsuario.getText(), 
+                                        txt_ApellidoUsuario.getText(), 
+                                        txt_Nick.getText(), 
+                                        cb_RolUsuario.getSelectedItem().toString(), 
+                                        false);
+                                    System.out.println("AQUI: "+cb_EstadoUsuario.getSelectedIndex());
+                                }
+                            }
+                            
+                            JOptionPane.showMessageDialog(null, "Actualizacion de usuario exitosa!", "Actualizacion Usuario", JOptionPane.INFORMATION_MESSAGE);
+                            
+                            try {
+                                ListUsuarios = new LinkedList<UsuariosLogic>();
+                                dfmTableUsuarios = (DefaultTableModel) tbl_Usuarios.getModel();
+
+                                ListUsuarios = us.GetUsers();
+                                dfmTableUsuarios.setNumRows(0);
+
+                                for(int i = 0; i < ListUsuarios.size(); i++){
+
+                                    String estado = "";
+
+                                    if(ListUsuarios.get(i).getEstadoUser()){
+                                        estado = "ACTIVO";
+                                    } else {
+                                        estado = "INACTIVO";
+                                    }
+
+                                    Object [ ] row = {
+                                        ListUsuarios.get(i).getIdUser(),
+                                        ListUsuarios.get(i).getNomUser()+" "+ListUsuarios.get(i).getApeUser(),
+                                        ListUsuarios.get(i).getNickUser(),
+                                        ListUsuarios.get(i).getRolUser(),
+                                        estado
+                                    };
+                                    dfmTableUsuarios.addRow(row);
+                            }
+
+                            } catch(Exception ex){
+                                System.err.println(ex.getMessage());
+                            }
+                            
+                            //REINICIO DATOS - CANCELACION PROCESO
+                            lbl_Fec_Crea.setText("SIN DATOS");
+                            txt_BuscarUsuario.setText("");
+                            txt_IdUsuario.setText("");
+                            txt_NombreUsuario.setText("");
+                            txt_Nick.setText("");
+                            txt_ApellidoUsuario.setText("");
+                            txt_PasswordUsr1.setText("");
+                            txt_PasswordUsr2.setText("");
+                            cb_EstadoUsuario.setSelectedIndex(0);
+                            cb_RolUsuario.setSelectedIndex(0);
+                            
+                            txt_IdUsuario.setEnabled(false);
+                            txt_NombreUsuario.setEnabled(false);
+                            txt_Nick.setEnabled(false);
+                            txt_ApellidoUsuario.setEnabled(false);
+                            txt_PasswordUsr1.setEnabled(false);
+                            txt_PasswordUsr2.setEnabled(false);
+
+                            cb_EstadoUsuario.setEnabled(false);
+                            cb_RolUsuario.setEnabled(false);
+                            
+                            btn_NuevoUsuario.setEnabled(true);
+                            btn_BuscarUsuario.setEnabled(true);
+                            
+                            btn_CrearUsuario.setEnabled(false);
+                            btn_ActualizarUsuario.setEnabled(false);
+                        }
+                    }
+                }
+            }
+        }
+        
+    }//GEN-LAST:event_btn_ActualizarUsuarioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
