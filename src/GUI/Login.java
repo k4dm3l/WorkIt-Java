@@ -345,9 +345,11 @@ public class Login extends javax.swing.JFrame {
                             p.setVisible(true);
                             this.dispose();
                         } else {
-                            JOptionPane.showMessageDialog(null, "Valide su usuario y clave o comuniquese con el administrador del sistema", "Credenciales Erradas", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Confirme que su usuario no se encuentra DESACTIVADO. Valide tambien su usuario y clave o comuniquese con el administrador del sistema", "Credenciales Erradas", JOptionPane.ERROR_MESSAGE);
                             txt_Password.setText("");
                             txt_User.setText("");
+                            
+                            txt_User.requestFocus();
                         }
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);

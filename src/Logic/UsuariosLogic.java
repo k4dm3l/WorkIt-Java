@@ -179,6 +179,22 @@ public class UsuariosLogic {
         }
     }
     
+    public void updatePassword(int idU, String newPass){
+        String SSQL = "UPDATE usuarios SET clave_usuario = SHA1('"+newPass+"') WHERE id_doc_usuario = "+idU;
+        
+        try {
+            Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
+            PreparedStatement pst = conDB.prepareStatement(SSQL);
+            
+            pst.executeUpdate();
+            
+        } catch (SQLException ex){
+            
+        } catch(ClassNotFoundException ex){
+            Logger.getLogger(CajaLogic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void updateUser(int idU, String nomU, String apeU, String nickU, String rolU, boolean estU){
         String SSQL = "UPDATE usuarios SET "
                 + " nom_usuario = ?"
@@ -206,6 +222,79 @@ public class UsuariosLogic {
         } catch(ClassNotFoundException ex){
             Logger.getLogger(CajaLogic.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void createUser(int idU, String nomU, String apeU, String nickU, String claveU, String rolU, boolean estU){
+        String SSQL = "INSERT INTO usuarios "
+                + "(id_doc_usuario, nom_usuario, ape_usuario, nick_usuario,"
+                + "clave_usuario, rol_usuario, estado_usuario) "
+                + "VALUES (?, ?, ?, ?, SHA1(?), ?, ?)";
+        
+        try {
+            Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
+            PreparedStatement pst = conDB.prepareStatement(SSQL);
+            
+            pst.setInt(1, idU);
+            pst.setString(2, nomU);
+            pst.setString(3, apeU);
+            pst.setString(4, nickU);
+            pst.setString(5, claveU);
+            pst.setString(6, rolU);
+            pst.setBoolean(7, estU);
+            
+            pst.execute();
+            
+        } catch(SQLException ex){
+            
+        } catch(ClassNotFoundException ex){
+            Logger.getLogger(CajaLogic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public boolean checkLoginUser(String nick){
+        String SSQL = "SELECT * FROM usuarios"
+                + " WHERE nick_usuario = '"+nick+"'";
+        boolean result = false;
+        
+        try{
+            Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
+            
+            Statement st = (Statement) conDB.createStatement();
+            ResultSet rs = st.executeQuery(SSQL);
+            
+            if(rs.next()){
+                result = true;
+            }
+            
+        } catch(SQLException ex){
+            System.err.println(ex.getMessage());
+        } catch(ClassNotFoundException ex){
+            System.err.println(ex.getMessage());
+        }
+        return result;
+    }
+    
+    public boolean checkIDuser(int idU){
+        String SSQL = "SELECT * FROM usuarios"
+                + " WHERE id_doc_usuario = "+idU;
+        boolean result = false;
+        
+        try{
+            Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
+            
+            Statement st = (Statement) conDB.createStatement();
+            ResultSet rs = st.executeQuery(SSQL);
+            
+            if(rs.next()){
+                result = true;
+            }
+            
+        } catch(SQLException ex){
+            System.err.println(ex.getMessage());
+        } catch(ClassNotFoundException ex){
+            System.err.println(ex.getMessage());
+        }
+        return result;
     }
     
 }

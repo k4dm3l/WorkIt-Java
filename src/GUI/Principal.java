@@ -35,6 +35,7 @@ public class Principal extends javax.swing.JFrame {
     Facturacion f;
     Caja c;
     Usuarios us;
+    Productos pr;
     
     Utilidades u;
     
@@ -55,6 +56,7 @@ public class Principal extends javax.swing.JFrame {
             f = new Facturacion( );
             c = new Caja();
             us= new Usuarios();
+            pr = new Productos();
             
             //Singleton
             cmSQL = ConnectionMySQL.getInstance();
@@ -521,6 +523,8 @@ public class Principal extends javax.swing.JFrame {
         resetBackgroundColor(btn_opcUsuarios);
         resetBackgroundColor(btn_opcClientes);
         resetBackgroundColor(btn_opcCaja);
+        
+        panelCarga.setViewportView(pr);
     }//GEN-LAST:event_btn_opcProductosMouseClicked
 
     private void btn_opcClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_opcClientesMouseClicked

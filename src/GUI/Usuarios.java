@@ -3,7 +3,10 @@ package GUI;
 import Logic.LoginLogic;
 import Logic.UsuariosLogic;
 import java.util.LinkedList;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -80,6 +83,7 @@ public class Usuarios extends javax.swing.JPanel {
         menuOpciones = new javax.swing.JPopupMenu();
         menuActualizarUsuario = new javax.swing.JMenuItem();
         menuDesactivarUsuario = new javax.swing.JMenuItem();
+        menuCambiarClaveUsuario = new javax.swing.JMenuItem();
         btn_BuscarUsuario = new javax.swing.JButton();
         txt_BuscarUsuario = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -124,6 +128,14 @@ public class Usuarios extends javax.swing.JPanel {
             }
         });
         menuOpciones.add(menuDesactivarUsuario);
+
+        menuCambiarClaveUsuario.setText("Cambiar Clave");
+        menuCambiarClaveUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCambiarClaveUsuarioActionPerformed(evt);
+            }
+        });
+        menuOpciones.add(menuCambiarClaveUsuario);
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(522, 550));
@@ -183,6 +195,12 @@ public class Usuarios extends javax.swing.JPanel {
             tbl_Usuarios.getColumnModel().getColumn(4).setPreferredWidth(25);
         }
 
+        txt_IdUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_IdUsuarioKeyTyped(evt);
+            }
+        });
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setText("identificación:");
 
@@ -197,6 +215,11 @@ public class Usuarios extends javax.swing.JPanel {
 
         btn_CrearUsuario.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btn_CrearUsuario.setText("Crear");
+        btn_CrearUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CrearUsuarioActionPerformed(evt);
+            }
+        });
 
         btn_ActualizarUsuario.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btn_ActualizarUsuario.setText("Actualizar");
@@ -569,15 +592,19 @@ public class Usuarios extends javax.swing.JPanel {
                             JOptionPane.showMessageDialog(null, "Se debe seleccionar un ROL para el usuario", "Actualizacion Usuario", JOptionPane.ERROR_MESSAGE);
                             cb_RolUsuario.requestFocus();
                         } else {
-                            
-                            if(cb_EstadoUsuario.getSelectedIndex() == 1){
+                            if((log.getUserID() == Integer.parseInt(txt_IdUsuario.getText())) && (cb_EstadoUsuario.getSelectedIndex() == 2)){
+                                JOptionPane.showMessageDialog(null, "No puede DESACTIVAR su propio usuario", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                                cb_EstadoUsuario.setSelectedIndex(1);
+                                cb_EstadoUsuario.requestFocus();
+                            } else {
+                                
+                                if(cb_EstadoUsuario.getSelectedIndex() == 1){
                                 us.updateUser(Integer.parseInt(txt_IdUsuario.getText()), 
                                     txt_NombreUsuario.getText(), 
                                     txt_ApellidoUsuario.getText(), 
                                     txt_Nick.getText(), 
                                     cb_RolUsuario.getSelectedItem().toString(), 
                                     true);
-                                System.out.println("AQUI: "+cb_EstadoUsuario.getSelectedIndex());
                             } else {
                                 if(cb_EstadoUsuario.getSelectedIndex() == 2){
                                     us.updateUser(Integer.parseInt(txt_IdUsuario.getText()), 
@@ -586,7 +613,6 @@ public class Usuarios extends javax.swing.JPanel {
                                         txt_Nick.getText(), 
                                         cb_RolUsuario.getSelectedItem().toString(), 
                                         false);
-                                    System.out.println("AQUI: "+cb_EstadoUsuario.getSelectedIndex());
                                 }
                             }
                             
@@ -650,6 +676,7 @@ public class Usuarios extends javax.swing.JPanel {
                             
                             btn_CrearUsuario.setEnabled(false);
                             btn_ActualizarUsuario.setEnabled(false);
+                            }
                         }
                     }
                 }
@@ -657,6 +684,246 @@ public class Usuarios extends javax.swing.JPanel {
         }
         
     }//GEN-LAST:event_btn_ActualizarUsuarioActionPerformed
+
+    private void btn_CrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CrearUsuarioActionPerformed
+        if(txt_IdUsuario.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "El campo ID de usuario es obligatorio", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+            txt_IdUsuario.requestFocus();
+        } else {
+            if(txt_NombreUsuario.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "El campo NOMBRES de usuario es obligatorio", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                txt_NombreUsuario.requestFocus();
+            } else {
+                if(txt_ApellidoUsuario.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "El campo APELLIDOS de usuario es obligatorio", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                    txt_ApellidoUsuario.requestFocus();
+                } else {
+                    if(txt_Nick.getText().isEmpty()){
+                        JOptionPane.showMessageDialog(null, "El campo NICK de usuario es obligatorio", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                        txt_Nick.requestFocus();
+                    } else {
+                        if(txt_PasswordUsr1.getPassword().length == 0){
+                            JOptionPane.showMessageDialog(null, "El campo CLAVE de usuario es obligatorio", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                            txt_PasswordUsr1.requestFocus();
+                        } else {
+                            if(txt_PasswordUsr2.getPassword().length == 0){
+                                JOptionPane.showMessageDialog(null, "El campo CLAVE de usuario es obligatorio", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                                txt_PasswordUsr2.requestFocus();
+                            } else {
+                                if(cb_EstadoUsuario.getSelectedIndex() != 1){
+                                    JOptionPane.showMessageDialog(null, "El ESTADO del usuario es obligatorio y debe ser ACTIVO", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                                    cb_EstadoUsuario.requestFocus();
+                                } else {
+                                    if(cb_RolUsuario.getSelectedIndex() == 0){
+                                        JOptionPane.showMessageDialog(null, "Debe seleccionar un ROL para el usuario. Esto es obligatorio", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                                        cb_RolUsuario.requestFocus();
+                                    } else {
+                                        char[ ] arPass1 = txt_PasswordUsr1.getPassword();
+                                        char[ ] arPass2 = txt_PasswordUsr2.getPassword();
+                                        
+                                        String pass1 = new String(arPass1);
+                                        String pass2 = new String(arPass2);
+                                        
+                                        if(!(pass1.equals(pass2))){
+                                            JOptionPane.showMessageDialog(null, "No coinciden las claves. Recuerde que estas deben coincidir. Ingresela nuevamente", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                                            txt_PasswordUsr1.setText("");
+                                            txt_PasswordUsr2.setText("");
+                                            
+                                            txt_PasswordUsr1.requestFocus();
+                                        } else {
+                                            if(us.checkIDuser(Integer.parseInt(txt_IdUsuario.getText()))){
+                                                JOptionPane.showMessageDialog(null, "El ID del usuario que trata de crear ya existe!. Valide por favor", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                                                txt_IdUsuario.requestFocus();
+                                            } else {
+                                                if(us.checkLoginUser(txt_Nick.getText())){
+                                                    JOptionPane.showMessageDialog(null, "El NICK del usuario que trata de crear ya existe!. Valide por favor", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                                                    txt_Nick.requestFocus();
+                                                } else { 
+                                                            us.createUser(Integer.parseInt(txt_IdUsuario.getText()), 
+                                                                txt_NombreUsuario.getText(), 
+                                                                txt_ApellidoUsuario.getText(), 
+                                                                txt_Nick.getText(), 
+                                                                pass1, 
+                                                                cb_RolUsuario.getSelectedItem().toString(), 
+                                                                true);
+
+                                                        JOptionPane.showMessageDialog(null, "Nuevo usuario creado EXITOSAMENTE", "Creacion Usuario", JOptionPane.INFORMATION_MESSAGE);
+
+                                                         try {
+                                                            ListUsuarios = new LinkedList<UsuariosLogic>();
+                                                            dfmTableUsuarios = (DefaultTableModel) tbl_Usuarios.getModel();
+
+                                                            ListUsuarios = us.GetUsers();
+                                                            dfmTableUsuarios.setNumRows(0);
+
+                                                            for(int i = 0; i < ListUsuarios.size(); i++){
+
+                                                                String estado = "";
+
+                                                                if(ListUsuarios.get(i).getEstadoUser()){
+                                                                    estado = "ACTIVO";
+                                                                } else {
+                                                                    estado = "INACTIVO";
+                                                                }
+
+                                                                Object [ ] row = {
+                                                                    ListUsuarios.get(i).getIdUser(),
+                                                                    ListUsuarios.get(i).getNomUser()+" "+ListUsuarios.get(i).getApeUser(),
+                                                                    ListUsuarios.get(i).getNickUser(),
+                                                                    ListUsuarios.get(i).getRolUser(),
+                                                                    estado
+                                                                };
+                                                                dfmTableUsuarios.addRow(row);
+                                                        }
+
+                                                        } catch(Exception ex){
+                                                            System.err.println(ex.getMessage());
+                                                        }
+
+                                                        //REINICIO DATOS - CANCELACION PROCESO
+                                                        lbl_Fec_Crea.setText("SIN DATOS");
+                                                        txt_BuscarUsuario.setText("");
+                                                        txt_IdUsuario.setText("");
+                                                        txt_NombreUsuario.setText("");
+                                                        txt_Nick.setText("");
+                                                        txt_ApellidoUsuario.setText("");
+                                                        txt_PasswordUsr1.setText("");
+                                                        txt_PasswordUsr2.setText("");
+                                                        cb_EstadoUsuario.setSelectedIndex(0);
+                                                        cb_RolUsuario.setSelectedIndex(0);
+
+                                                        txt_IdUsuario.setEnabled(false);
+                                                        txt_NombreUsuario.setEnabled(false);
+                                                        txt_Nick.setEnabled(false);
+                                                        txt_ApellidoUsuario.setEnabled(false);
+                                                        txt_PasswordUsr1.setEnabled(false);
+                                                        txt_PasswordUsr2.setEnabled(false);
+
+                                                        cb_EstadoUsuario.setEnabled(false);
+                                                        cb_RolUsuario.setEnabled(false);
+
+                                                        btn_NuevoUsuario.setEnabled(true);
+                                                        btn_BuscarUsuario.setEnabled(true);
+                                                        btn_CrearUsuario.setEnabled(false);
+                                                        btn_ActualizarUsuario.setEnabled(false);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_btn_CrearUsuarioActionPerformed
+
+    private void txt_IdUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_IdUsuarioKeyTyped
+        char checkTyped = evt.getKeyChar();
+        
+        if(checkTyped < '0' || checkTyped > '9'){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txt_IdUsuarioKeyTyped
+
+    private void menuCambiarClaveUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCambiarClaveUsuarioActionPerformed
+        String pass1 = "";
+        String pass2 = "";
+        String[] options1;
+        String[] options2;
+        
+        int op1 = 3;
+        int op2 = 3;
+        
+        JPanel panelPass1 = new JPanel();
+        JLabel labelPass1 = new JLabel("Ingresa la nueva clave para el usuario:");
+        JPasswordField txt_pass1 = new JPasswordField(15);
+        
+        JPanel panelPass2 = new JPanel();
+        JLabel labelPass2 = new JLabel("Por favor, confirme nuevamente la clave para el usuario:");
+        JPasswordField txt_pass2 = new JPasswordField(15);
+        
+        panelPass1.add(labelPass1);
+        panelPass1.add(txt_pass1);
+        options1 = new String[]{"OK", "Cancelar"};
+        
+        panelPass2.add(labelPass2);
+        panelPass2.add(txt_pass2);
+        options2 = new String[]{"OK", "Cancelar"};
+        
+        JOptionPane.showMessageDialog(null, "Se procedera a realizar cambio de clave al usuario seleccionado.", "Cambio clave usuario", JOptionPane.INFORMATION_MESSAGE);
+        
+        op1 = JOptionPane.showOptionDialog(null, panelPass1, "Cambio Clave Usuario",
+                         JOptionPane.NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                         null, options1, options1[1]);
+        //================================================
+            while((op1 == 0) &&(txt_pass1.getPassword().length == 0)) {
+                    JOptionPane.showMessageDialog(null, "Este campo NO puede estar vacio", "Cambio clave usuario", JOptionPane.INFORMATION_MESSAGE);
+                    txt_pass1.setText("");
+
+                    op1 = JOptionPane.showOptionDialog(null, panelPass1, "Cambio Clave Usuario",
+                             JOptionPane.NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                             null, options1, options1[1]);
+            }
+            
+            while((op1 == 0) &&(txt_pass1.getPassword().length <= 5)) {
+                    JOptionPane.showMessageDialog(null, "La clave debe ser de almenos 6 caracteres", "Cambio clave usuario", JOptionPane.INFORMATION_MESSAGE);
+                    txt_pass1.setText("");
+
+                    op1 = JOptionPane.showOptionDialog(null, panelPass1, "Cambio Clave Usuario",
+                             JOptionPane.NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                             null, options1, options1[1]);
+           }
+            
+            char[ ] arPass1 = txt_pass1.getPassword();
+            pass1 = new String(arPass1);
+            
+            if((op1 == 1) || (op1 == -1)){
+                JOptionPane.showMessageDialog(null, "Proceso Cancelado!", "Cambio clave usuario", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                op2 = JOptionPane.showOptionDialog(null, panelPass2, "Cambio Clave Usuario",
+                         JOptionPane.NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                         null, options2, options2[1]);
+                
+                while((op2 == 0) &&(txt_pass2.getPassword().length == 0)) {
+                        JOptionPane.showMessageDialog(null, "Este campo NO puede estar vacio", "Cambio clave usuario", JOptionPane.INFORMATION_MESSAGE);
+                        txt_pass2.setText("");
+
+                        op2 = JOptionPane.showOptionDialog(null, panelPass2, "Cambio Clave Usuario",
+                                 JOptionPane.NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                                 null, options2, options2[1]);
+                        }
+
+                while((op2 == 0) &&(txt_pass2.getPassword().length <= 5)) {
+                            JOptionPane.showMessageDialog(null, "La clave debe ser de almenos 6 caracteres", "Cambio clave usuario", JOptionPane.INFORMATION_MESSAGE);
+                            txt_pass2.setText("");
+
+                            op2 = JOptionPane.showOptionDialog(null, panelPass2, "Cambio Clave Usuario",
+                                     JOptionPane.NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                                     null, options2, options2[1]);
+                }
+                
+                char[ ] arPass2 = txt_pass2.getPassword();
+                pass2 = new String(arPass2);
+                
+                if((op2 == 1) || (op2 == -1)){
+                    JOptionPane.showMessageDialog(null, "Proceso Cancelado!", "Cambio clave usuario", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    if(pass1.equals(pass2)){
+                        //BLOQUE DE CODIGO DONDE ACTUALIZA
+                        int idU = (Integer) tbl_Usuarios.getValueAt(tbl_Usuarios.getSelectedRow(), 0);
+                        us.updatePassword(idU, pass1);
+                        JOptionPane.showMessageDialog(null, "Clave actualizada EXITOSAMENTE", "Cambio clave usuario", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        //CONTROL DE QUE NO SON IGUALES
+                        JOptionPane.showMessageDialog(null, "Las claves ingresados no son iguales. La clave del usuario NO fue actualizada", "Cambio clave usuario", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        //================================================
+        
+    }//GEN-LAST:event_menuCambiarClaveUsuarioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -680,6 +947,7 @@ public class Usuarios extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbl_Fec_Crea;
     private javax.swing.JMenuItem menuActualizarUsuario;
+    private javax.swing.JMenuItem menuCambiarClaveUsuario;
     private javax.swing.JMenuItem menuDesactivarUsuario;
     private javax.swing.JPopupMenu menuOpciones;
     private javax.swing.JTable tbl_Usuarios;
