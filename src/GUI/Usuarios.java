@@ -702,12 +702,12 @@ public class Usuarios extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(null, "El campo NICK de usuario es obligatorio", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
                         txt_Nick.requestFocus();
                     } else {
-                        if(txt_PasswordUsr1.getPassword().length == 0){
-                            JOptionPane.showMessageDialog(null, "El campo CLAVE de usuario es obligatorio", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                        if(txt_PasswordUsr2.getPassword().length <= 5){
+                            JOptionPane.showMessageDialog(null, "El campo CLAVE de usuario es obligatorio, deben ser alfanumerica y mayor a 5 digitos", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
                             txt_PasswordUsr1.requestFocus();
                         } else {
-                            if(txt_PasswordUsr2.getPassword().length == 0){
-                                JOptionPane.showMessageDialog(null, "El campo CLAVE de usuario es obligatorio", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
+                            if(txt_PasswordUsr2.getPassword().length <= 5){
+                                JOptionPane.showMessageDialog(null, "El campo CLAVE de usuario es obligatorio, deben ser alfanumerica y mayor a 5 digitos", "Creacion Usuario", JOptionPane.ERROR_MESSAGE);
                                 txt_PasswordUsr2.requestFocus();
                             } else {
                                 if(cb_EstadoUsuario.getSelectedIndex() != 1){

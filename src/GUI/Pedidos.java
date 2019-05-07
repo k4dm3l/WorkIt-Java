@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -59,6 +60,7 @@ public class Pedidos extends javax.swing.JPanel {
         
         df = new DecimalFormat("#,###");
         p = new PedidosLogic();
+        
         try { 
                 ListProductos = new LinkedList<PedidosLogic>();
                 dfmTable = (DefaultTableModel) tbl_Productos.getModel();
@@ -74,12 +76,16 @@ public class Pedidos extends javax.swing.JPanel {
                     };
                     dfmTable.addRow(row);
                 }
-             } catch (ClassNotFoundException ex) {
+             } catch (Exception ex) {
                 System.out.println(ex.toString());
             }
         
         p.loadComboBoxMesas(cb_Mesas);
                
+    }
+    
+    public JTable getTableProductos(){
+        return this.tbl_Productos;
     }
 
     @SuppressWarnings("unchecked")
@@ -161,6 +167,7 @@ public class Pedidos extends javax.swing.JPanel {
             }
         });
         tbl_Productos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tbl_Productos.setGridColor(new java.awt.Color(255, 255, 255));
         tbl_Productos.setSelectionBackground(new java.awt.Color(255, 102, 102));
         tbl_Productos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

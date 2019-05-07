@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Utilidades {
     
-    private static String VERSION_APP = "1.8.20";
+    private static String VERSION_APP = "1.8.21";
     private static Utilidades utilidades;
     
     private Utilidades(){

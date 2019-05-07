@@ -90,7 +90,8 @@ public class PedidosLogic {
         return total;
     }
     
-    public LinkedList<PedidosLogic>GetProductos() throws ClassNotFoundException{
+    /**
+    public LinkedList<PedidosLogic>getUpdatedProducts() throws ClassNotFoundException{
         LinkedList<PedidosLogic> listadoProductos = new LinkedList<PedidosLogic>();
         String SSQL = "SELECT id_producto, nom_producto, precio_producto_und FROM Productos";
                 
@@ -110,6 +111,34 @@ public class PedidosLogic {
             
         } catch (SQLException ex){
             System.err.println(ex);
+        }
+        
+        return listadoProductos;
+    }
+    **/
+    
+    public LinkedList<PedidosLogic>GetProductos() {
+        LinkedList<PedidosLogic> listadoProductos = new LinkedList<PedidosLogic>();
+        String SSQL = "SELECT id_producto, nom_producto, precio_producto_und FROM Productos";
+                
+        try {
+            Connection conDB = ConnectionMySQL.getInstance().getDBConnection();
+            
+            Statement st = (Statement) conDB.createStatement();
+            ResultSet rs = st.executeQuery(SSQL);
+            
+            while(rs.next()){
+                id_producto = rs.getInt(1);
+                nom_producto = rs.getString(2);
+                precio_producto_und = rs.getInt(3);
+                PedidosLogic p = new PedidosLogic(id_producto, nom_producto, precio_producto_und);
+                listadoProductos.add(p);
+            }
+            
+        } catch (SQLException ex){
+            System.err.println(ex);
+        } catch(ClassNotFoundException ex){
+            
         }
         
         return listadoProductos;

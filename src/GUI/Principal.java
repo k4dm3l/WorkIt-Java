@@ -2,7 +2,9 @@ package GUI;
 
 import Logic.CajaLogic;
 import Logic.LoginLogic;
+import Logic.PedidosLogic;
 import Logic.PrincipalLogic;
+import Logic.ProductosLogic;
 import Logic.Utilidades;
 import Persistencia.ConnectionMySQL;
 import com.sun.awt.AWTUtilities;
@@ -12,6 +14,7 @@ import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -43,6 +46,7 @@ public class Principal extends javax.swing.JFrame {
     PrincipalLogic pl;
     LoginLogic lg;
     CajaLogic cl;
+    PedidosLogic pdl;
     
     public Principal()  {
         initComponents();
@@ -64,6 +68,7 @@ public class Principal extends javax.swing.JFrame {
             pl = PrincipalLogic.getInstance();
             lg = LoginLogic.getInstance();
             u = Utilidades.getInstance();
+            pdl = new PedidosLogic();
             
             setIconImage(new ImageIcon(getClass().getResource("../Multimedia/TurtleIcon.png")).getImage());
             this.setTitle("Workit App - "+u.getVersionApp());
@@ -486,6 +491,19 @@ public class Principal extends javax.swing.JFrame {
         
         
         panelCarga.setViewportView(p);
+        
+        p.dfmTable = (DefaultTableModel) p.getTableProductos().getModel();
+        p.ListProductos = pdl.GetProductos();
+        p.dfmTable.setNumRows(0);
+            
+        for(int i = 0; i < p.ListProductos.size(); i++){
+            Object [ ] row = {
+                p.ListProductos.get(i).getIdProducto(),
+                p.ListProductos.get(i).getNombreProducto(),
+                p.ListProductos.get(i).getPrecioProducto()
+            };
+            p.dfmTable.addRow(row);
+        }
     }//GEN-LAST:event_btn_opcPedidosMouseClicked
 
     private void btn_opcFacturarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_opcFacturarMouseClicked
